@@ -147,6 +147,10 @@ The API is stateless. To keep the conversation **coherent**, each request must i
 
 This is why the techniques above matter: you **keep sending history**, so you **control what goes into it** (trimmed tool results, case facts, structured issue lists) instead of cutting history randomly.
 
+### Prompt caching (know that it exists)
+
+**Prompt caching** lets the API reuse a long prompt prefix that you send again and again, such as a long system prompt or document. The repeated part then costs less and returns faster. The exam tests only that it exists. Implementation details are out of scope (exam guide §17; Sources checked table in the [README](README.md), row A9).
+
 ---
 
 ## 7. Real-world case study
