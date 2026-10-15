@@ -44,7 +44,7 @@ The MCP specification separates two kinds of errors:
 | **Protocol errors** | Unknown tool name, malformed request, server crash | JSON-RPC `error` object (the call never really ran) |
 | **Tool execution errors** | API failure, invalid input data, business-rule failure | Result with **`isError: true`**, visible to the model so it can react |
 
-Because execution errors come back **as tool results**, the model sees them and can **self-correct** (fix an argument, try another tool, or explain to the user). In the Claude API this becomes a `tool_result` block with `is_error: true`.
+Because execution errors come back **as tool results**, the model sees them and can **self-correct**. It can fix an argument, try another tool, or explain to the user. In the Claude API this becomes a `tool_result` block with `is_error: true`.
 
 ---
 
@@ -123,7 +123,7 @@ Business rule violations are **not failures of the system**. The system worked; 
 - Include a **customer-friendly explanation** the agent can communicate directly.
 - Optionally include **alternatives** (store credit, exchange, escalation path).
 
-This keeps the agent from sending messages like "There was an error, please try again later" when the honest answer is "this is outside the policy".
+This stops the agent from sending messages like "There was an error, please try again later". The honest answer may be "this is outside the policy".
 
 ---
 
@@ -184,7 +184,7 @@ These two results look similar but mean very different things:
 {"isError": true, "content": [{"type": "text", "text": "{\"errorCategory\": \"transient\", \"isRetryable\": true, \"message\": \"Orders DB unreachable\"}"}]}
 ```
 
-If a tool returns an **empty list on failure**, the agent will confidently tell a customer "you have no orders", which is a **wrong answer**, not an error. Always keep failures and empty results clearly separate.
+If a tool returns an **empty list on failure**, the agent will confidently tell a customer "you have no orders". That is a **wrong answer**, not an error. Always keep failures and empty results clearly separate.
 
 ---
 

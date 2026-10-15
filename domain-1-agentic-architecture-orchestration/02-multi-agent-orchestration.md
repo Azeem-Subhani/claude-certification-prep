@@ -16,7 +16,7 @@ One agent with many tools works well for small tasks. For big tasks, a single ag
 
 A **multi-agent system** splits the work across several agents, each with a focused job and its own clean context.
 
-**When *not* to use multiple agents:** if the task is small or the steps are tightly linked, extra agents add cost, latency, and complexity with no benefit.
+**When *not* to use multiple agents:** if the task is small or the steps are tightly linked, extra agents give no benefit. They only add cost, latency, and complexity.
 
 ---
 
@@ -163,7 +163,7 @@ Each subagent's prompt should state its boundary *and* what is out of scope ("Do
 4. A **synthesis subagent** gets all findings (with sources) and writes a draft.
 5. The coordinator **reviews the draft for gaps**, sends 1–2 targeted follow-up searches, and re-runs synthesis.
 
-**Results:** better coverage, faster run time (parallel searches), and all communication is logged in one place, so the team can see exactly which subagent produced each claim.
+**Results:** better coverage and faster run time (parallel searches). All communication is logged in one place, so the team can see exactly which subagent produced each claim.
 
 ---
 

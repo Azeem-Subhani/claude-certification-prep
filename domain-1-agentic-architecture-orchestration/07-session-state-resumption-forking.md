@@ -175,7 +175,7 @@ Context from previous investigation (summary, verified 2025-06-02):
 - **Day 1:** Named session `db-migration-analysis`. The agent maps 60 files that touch the database.
 - **Day 2:** `claude --resume db-migration-analysis`. Two files changed overnight; the engineer tells the agent which two. The agent re-reads only those and continues.
 - **Day 2 (afternoon):** The team can't choose between "dual-write" and "big-bang cutover". They **fork** the session twice. Each fork develops a full plan from the same 60-file analysis. They compare the two plans side by side.
-- **Day 3:** A large unrelated refactor lands and touches 25 of the 60 files. Instead of resuming, the engineer asks for a **structured summary** of the decisions, starts a **fresh session**, injects the summary, and lets the agent re-map the changed files.
+- **Day 3:** A large unrelated refactor lands and touches 25 of the 60 files. Instead of resuming, the engineer asks for a **structured summary** of the decisions. Then they start a **fresh session** and inject the summary. The agent re-maps the changed files.
 
 **Result:** No repeated full exploration, a clear comparison of the two approaches, and no decisions based on stale file contents.
 

@@ -65,7 +65,7 @@ Credible sources sometimes **disagree**:
 
 **Right:** **annotate the conflict with attribution**:
 
-> **Contested:** Estimates of AI's effect on editorial jobs differ. An industry report (A, 2025) estimates a 12% reduction, based on employer surveys; a university study (B, 2025) finds no significant change, based on national labor statistics. The difference may reflect methodology (employer self-reports vs official data).
+> **Contested:** Estimates of AI's effect on editorial jobs differ. An industry report (A, 2025) estimates a 12% reduction, based on employer surveys. A university study (B, 2025) finds no significant change, based on national labor statistics. The difference may reflect methodology (employer self-reports vs official data).
 
 ### Let the coordinator reconcile
 

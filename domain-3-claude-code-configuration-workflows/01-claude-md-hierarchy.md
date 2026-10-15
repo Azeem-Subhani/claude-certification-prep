@@ -128,7 +128,7 @@ User-level rules can also go in `~/.claude/rules/`, applying to all your project
 
 ## 6. Diagnosing with `/memory`
 
-When Claude behaves **inconsistently** (follows a rule in one session, ignores it in another, or behaves differently for two developers), check **which memory files are actually loaded**.
+Claude may behave **inconsistently**. It may follow a rule in one session and ignore it in another, or act differently for two developers. In that case, check **which memory files are actually loaded**.
 
 - **`/memory`** lists your CLAUDE.md (and related) files across user and project scopes and lets you open them for editing.
 - Current docs also point to **`/context`** to see exactly which CLAUDE.md and rules files loaded into this session.

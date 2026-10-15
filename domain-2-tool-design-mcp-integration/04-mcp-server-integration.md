@@ -72,13 +72,13 @@ claude mcp add --scope user my-experiment -- python ~/tools/experiment_server.py
 "headers": { "Authorization": "Bearer ghp_xxxxxxxxxxxxxxxxxxxx" }   // ❌ secret in a committed file
 ```
 
-> **Security note:** Claude Code asks you to **approve** project-scoped servers from `.mcp.json` before using them in interactive sessions, because a cloned repo could contain an untrusted server. Review what a server does before approving it.
+> **Security note:** Claude Code asks you to **approve** project-scoped servers from `.mcp.json` before using them in interactive sessions. A cloned repo could contain an untrusted server. Review what a server does before approving it.
 
 ---
 
 ## 3. All servers' tools are available together
 
-When Claude Code (or an Agent SDK app) starts, it **discovers the tools of all configured MCP servers** and makes them available **at the same time**, alongside the built-in tools.
+When Claude Code (or an Agent SDK app) starts, it **discovers the tools of all configured MCP servers**. It makes them available **at the same time**, next to the built-in tools.
 
 Consequences:
 

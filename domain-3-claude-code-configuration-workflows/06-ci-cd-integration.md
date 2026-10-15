@@ -109,7 +109,7 @@ Documenting **testing standards, what makes a test valuable, and available fixtu
 
 If the **same Claude session** that wrote the code also reviews it, the review is weaker. The session already "believes" its own reasoning and assumptions are correct, so it tends to confirm them rather than question them.
 
-**Better:** run the review in a **separate, independent instance**: a fresh `claude -p` run with no memory of how the code was written, given only the diff, the context files, and the review criteria.
+**Better:** run the review in a **separate, independent instance**: a fresh `claude -p` run with no memory of how the code was written. Give it only the diff, the context files, and the review criteria.
 
 ```
 ❌ Session A writes the feature → Session A reviews it
@@ -178,7 +178,7 @@ Checklist covered: `-p` (no hang), restricted tools, structured output, CLAUDE.m
 3. After every push, the same 12 comments were reposted.
 4. Generated tests re-tested things already covered and ignored their fixtures.
 
-**Fixes:** `-p` mode; `--output-format json` + `--json-schema` with file/line/severity; prior findings passed in with "only new or unaddressed"; existing tests provided; fixtures and testing standards documented in CLAUDE.md; review run in a fresh instance separate from the code-generation job.
+**Fixes:** `-p` mode. `--output-format json` + `--json-schema` with file/line/severity. Prior findings passed in with "only new or unaddressed". Existing tests provided. Fixtures and testing standards documented in CLAUDE.md. Review run in a fresh instance separate from the code-generation job.
 
 ---
 

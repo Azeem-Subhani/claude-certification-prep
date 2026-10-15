@@ -98,7 +98,7 @@ An MCP server can expose three kinds of things:
 | **Resources** | **Read-only content** the app can load into context, identified by a URI | The **application / user** | A list of open issues, a database schema, a docs index |
 | **Prompts** | **Reusable prompt templates** the user can pick | The **user** | "Summarize this PR", "Write release notes" |
 
-> **Exam-relevant idea:** If the agent keeps making many small "exploratory" tool calls just to discover *what exists* (list tables, list docs, list issues), expose that catalog as a **resource** instead. See [04](04-mcp-server-integration.md).
+> **Exam-relevant idea:** Sometimes the agent makes many small "exploratory" tool calls just to discover *what exists* (list tables, list docs, list issues). In that case, expose that catalog as a **resource** instead. See [04](04-mcp-server-integration.md).
 
 ---
 

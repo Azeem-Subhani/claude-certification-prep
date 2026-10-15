@@ -258,7 +258,7 @@ If your code does not catch a tool error, the whole run stops with no answer for
 1. Some conversations stopped right after Claude wrote "Let me make sure this is resolved…" and before it called `process_refund`. Customers got no refund.
 2. Other conversations never contained "resolved" and ran until the 10-round cap. This cost money and caused timeouts.
 
-**Fix:** The team switched the loop to `stop_reason` (`tool_use` → continue, `end_turn` → stop) and kept a 25-round cap only as an alarm that creates an incident ticket. Early stops disappeared and cost per conversation fell.
+**Fix:** The team switched the loop to `stop_reason` (`tool_use` → continue, `end_turn` → stop) and kept a 25-round cap only as an alarm. The alarm creates an incident ticket. Early stops disappeared and cost per conversation fell.
 
 ---
 

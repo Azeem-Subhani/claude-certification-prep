@@ -113,7 +113,7 @@ Long multi-agent runs can **crash** (process killed, machine restarted, rate lim
 
 ## 6. `/compact` in Claude Code
 
-When an interactive Claude Code session fills with verbose discovery output, **`/compact`** replaces the conversation history with a **summary** (you can add instructions about what to keep), freeing context so the session can continue.
+When an interactive Claude Code session fills with verbose discovery output, **`/compact`** replaces the conversation history with a **summary**. You can add instructions about what to keep. This frees context so the session can continue.
 
 ```text
 /compact Keep the confirmed refund-flow call chain, the idempotency finding, and open questions.

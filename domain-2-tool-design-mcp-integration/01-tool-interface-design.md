@@ -37,7 +37,7 @@ A user writes: *"Check on my order #12345."* Both descriptions say "retrieves…
 
 Now the request "check on my order #12345" clearly matches `lookup_order`.
 
-> **Exam pattern:** When logs show the agent choosing the wrong one of two similar tools, and both have short descriptions, the **first and most effective fix** is to **improve the descriptions**. Answers like "add a routing classifier", "fine-tune the model", or "merge both tools" are usually more complex than needed or reduce capability.
+> **Exam pattern:** Logs may show the agent choosing the wrong one of two similar tools, and both have short descriptions. Then the **first and most effective fix** is to **improve the descriptions**. Answers like "add a routing classifier", "fine-tune the model", or "merge both tools" are usually more complex than needed or reduce capability.
 
 ---
 

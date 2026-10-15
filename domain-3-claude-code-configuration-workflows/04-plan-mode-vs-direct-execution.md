@@ -14,7 +14,7 @@
 | Cost of a wrong direction | Low: only a plan is thrown away | High: changes must be undone (**rework**) |
 | Speed for simple tasks | Slower (extra step) | Faster |
 
-In Claude Code you can switch into plan mode during a session (for example with **Shift+Tab** to cycle permission modes) or start in it with `--permission-mode plan`. You can also type `/plan` in the prompt.
+In Claude Code you can switch into plan mode during a session. For example, use **Shift+Tab** to cycle permission modes. You can also start in it with `--permission-mode plan`. You can also type `/plan` in the prompt.
 
 ---
 
@@ -62,7 +62,7 @@ The two modes work best **together** for big tasks:
 ```
 
 **Example: library migration**
-1. **Plan mode:** Find all 47 usages of the old HTTP client, group them by pattern (simple GET, retries, streaming), propose a migration order and a compatibility wrapper.
+1. **Plan mode:** Find all 47 usages of the old HTTP client and group them by pattern (simple GET, retries, streaming). Then propose a migration order and a compatibility wrapper.
 2. **Review:** The team agrees to migrate the streaming cases last.
 3. **Direct execution:** Implement batch by batch, running tests after each batch.
 
@@ -100,11 +100,11 @@ This is the same isolation idea as `context: fork` skills ([02](02-slash-command
 
 **Better:** Plan mode first. The exploration would have found the custom query builders, and the plan would have handled them first (or ruled out the migration).
 
-**Situation B (too much planning):** Another developer used plan mode to fix an off-by-one error in a date function, with a clear failing test and stack trace. The plan step added time and gave no benefit.
+**Situation B (too much planning):** Another developer used plan mode to fix an off-by-one error in a date function. There was a clear failing test and stack trace. The plan step added time and gave no benefit.
 
 **Better:** Direct execution.
 
-**Situation C (context exhaustion):** During a large refactor, the main session filled up with search output from exploring 200 files, and Claude started losing track of earlier decisions.
+**Situation C (context exhaustion):** During a large refactor, the main session filled up with search output from exploring 200 files. Claude started losing track of earlier decisions.
 
 **Better:** Delegate discovery to the **Explore subagent** and keep only the summary in the main session.
 
@@ -125,7 +125,7 @@ A: **Direct execution.**
 A: **Plan mode.** It involves architectural decisions and many files.
 
 **Q: What problem does the Explore subagent solve?**
-A: It keeps **verbose discovery output** out of the main context by doing the exploration separately and returning a summary, which prevents context exhaustion in long tasks.
+A: It keeps **verbose discovery output** out of the main context. It does the exploration separately and returns a summary. This prevents context exhaustion in long tasks.
 
 **Q: Can I use both modes in one task?**
 A: Yes, and you should for big tasks: plan mode to investigate and design, then direct execution to implement.
