@@ -102,6 +102,8 @@ Split it by **purpose**, each with a defined **input/output contract**:
 
 > **Balance:** Don't split too far. Ten nearly identical tiny tools create new overlap. Split when **purposes and outputs are truly different**. (Too many tools per agent is covered in [03](03-tool-distribution-and-tool-choice.md).)
 
+> ⚠️ **Product note:** the API docs also advise grouping closely related actions into one tool with an `action` parameter. For example, use one `pull_request` tool with `action: "create" | "review" | "merge"`, not three tools. This fits the exam rule "many versions of one job → one tool with a type parameter". It does not conflict with splitting a vague, do-everything tool like `analyze_document`. (Sources checked table in the [README](README.md), row A6b.)
+
 ---
 
 ## 4. Naming guidelines
