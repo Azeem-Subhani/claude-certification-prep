@@ -53,6 +53,8 @@ The pattern the exam focuses on is **hub-and-spoke**:
 
 If subagents talked directly to each other ("mesh" design), you would lose all three. Errors could spread silently, and nobody would have the full picture.
 
+> ⚠️ **Product note:** the exam treats direct subagent-to-subagent talk as always wrong. Current Claude Code lets a subagent start its own subagents, up to three layers deep, and this can be turned off. This does not change the hub-and-spoke exam answer. (See the Sources checked table in the [README](README.md), row C3.)
+
 ---
 
 ## 3. Subagents have isolated context
