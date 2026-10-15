@@ -35,7 +35,7 @@ The objectives below are paraphrased from the guide for study purposes. Check ex
 | [05 · Batch Processing](05-batch-processing.md) | 4.5: Message Batches API, latency fit, SLA math, `custom_id` resubmission |
 | [06 · Multi-Instance and Multi-Pass Review](06-multi-instance-multi-pass-review.md) | 4.6: self-review limits, independent reviewers, confidence calibration for routing |
 | [Anti-patterns](anti-patterns.md) | Wrong approaches, why they fail, what to do instead, and exam traps |
-| [07 · Practice Questions](07-scenario-practice-questions.md) | 25 original scenario questions with explanations |
+| [MCQ bank: Domain 4](../mcq-bank/04-prompt-engineering-structured-output.md) | 48 exam-level practice questions with answer key and explanations |
 
 Sources: the exam guide PDF, plus Anthropic docs: [Batch processing](https://platform.claude.com/docs/en/build-with-claude/batch-processing) and [Structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs). Where the guide and current API behavior differ (forced `tool_choice` on the newest models), the notes give both.
 
@@ -191,7 +191,3 @@ Conflicts with the exam guide are listed in [REVIEW_NEEDED.md](../REVIEW_NEEDED.
 | A8d | Results kept for 29 days; limit of 100,000 requests or 256 MB per batch | CONFIRMED |  | platform.claude.com/docs/en/build-with-claude/batch-processing |
 | A8e | Result types | CONFIRMED | `succeeded`, `errored`, `canceled`, `expired`. Requests that do not succeed are not billed. | platform.claude.com/docs/en/build-with-claude/batch-processing |
 | A8f | Batches cannot use tools | **CONFLICT (partial)** | Tool use, including server tools, **is** supported in batch requests. But you cannot run your own client-side tool loop inside one batch request: the round trip needs a new request. | platform.claude.com/docs/en/build-with-claude/batch-processing |
-
-## My notes
-
-<!-- Add study notes, lab links, and weak areas here -->

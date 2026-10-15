@@ -38,7 +38,7 @@ The objectives below are paraphrased from the guide for study purposes. Check ex
 | [06 · Task Decomposition](06-task-decomposition.md) | 1.6: prompt chaining vs adaptive decomposition |
 | [07 · Sessions](07-session-state-resumption-forking.md) | 1.7: resume, fork, stale context |
 | [Anti-patterns](anti-patterns.md) | Wrong approaches, why they fail, what to do instead, and exam traps |
-| [08 · Practice Questions](08-scenario-practice-questions.md) | 25 original scenario questions with explanations |
+| [MCQ bank: Domain 1](../mcq-bank/01-agentic-architecture.md) | 65 exam-level practice questions with answer key and explanations |
 
 Sources: the exam guide PDF, plus Anthropic docs for SDK details: [Agent SDK hooks](https://code.claude.com/docs/en/agent-sdk/hooks), [Agent SDK sessions](https://code.claude.com/docs/en/agent-sdk/sessions), [Agent SDK subagents](https://code.claude.com/docs/en/agent-sdk/subagents), [Claude Code sessions](https://code.claude.com/docs/en/sessions), [Handling tool calls](https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls). Where the guide and current docs differ (e.g. `Task` vs `Agent` tool name), the notes give both.
 
@@ -222,7 +222,3 @@ Conflicts with the exam guide are listed in [REVIEW_NEEDED.md](../REVIEW_NEEDED.
 | C5a | Hook events | CONFIRMED | Includes PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, PostCompact, Stop, SubagentStart, SubagentStop, SessionStart, SessionEnd, UserPromptSubmit, and others. | code.claude.com/docs/en/agent-sdk/hooks |
 | C5b | PreToolUse can block or change a call | CONFIRMED | `permissionDecision` (allow / deny / ask / defer) and `updatedInput`. | code.claude.com/docs/en/agent-sdk/hooks |
 | C5c | PostToolUse runs after the tool has run, and can change what Claude sees | CONFIRMED | `updatedToolOutput` replaces the result. `additionalContext` adds to it. | code.claude.com/docs/en/agent-sdk/hooks |
-
-## My notes
-
-<!-- Add study notes, lab links, and weak areas here -->

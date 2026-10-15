@@ -38,7 +38,7 @@ The objectives below are paraphrased from the guide for study purposes. Check ex
 | [05 · Human Review and Confidence Calibration](05-human-review-confidence-calibration.md) | 5.5: hidden weak segments, stratified sampling, field-level confidence, review routing |
 | [06 · Provenance and Uncertainty](06-provenance-and-uncertainty.md) | 5.6: claim-source mappings, conflicting sources, temporal data, rendering by content type |
 | [Anti-patterns](anti-patterns.md) | Wrong approaches, why they fail, what to do instead, and exam traps |
-| [07 · Practice Questions](07-scenario-practice-questions.md) | 25 original scenario questions with explanations |
+| [MCQ bank: Domain 5](../mcq-bank/05-context-management-reliability.md) | 36 exam-level practice questions with answer key and explanations |
 
 Sources: the exam guide PDF, plus [Claude Code sessions docs](https://code.claude.com/docs/en/sessions) (`/compact`) and the Agent SDK docs used in Domain 1.
 
@@ -199,7 +199,3 @@ Conflicts with the exam guide are listed in [REVIEW_NEEDED.md](../REVIEW_NEEDED.
 | A1 | The API is stateless. Each request must include the full history. | CONFIRMED | You always send the full conversation history. | platform.claude.com/docs/en/build-with-claude/working-with-messages |
 | A9 | Prompt caching exists | CONFIRMED | Uses `cache_control` breakpoints. The default cache lifetime is 5 minutes, with an optional 1-hour TTL (time to live). Cache reads cost much less than normal input. (The exam tests only that caching exists.) | platform.claude.com/docs/en/build-with-claude/prompt-caching |
 | C11 | `/compact` and auto-compaction | CONFIRMED | `/compact [instructions]` summarizes. Auto-compaction runs at a threshold. | code.claude.com/docs/en/commands; code.claude.com/docs/en/context-window |
-
-## My notes
-
-<!-- Add study notes, lab links, and weak areas here -->

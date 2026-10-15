@@ -132,7 +132,7 @@ Claude only knows what is in its context. A helper agent does not see what the m
 | [05](05-agent-sdk-hooks.md) | 1.5 Agent SDK hooks | Code that intercepts tool calls and tool results |
 | [06](06-task-decomposition.md) | 1.6 Task decomposition | Breaking big tasks into smaller steps |
 | [07](07-session-state-resumption-forking.md) | 1.7 Sessions | Continuing, branching, and restarting agent work |
-| [08](08-scenario-practice-questions.md) | All | Mixed practice questions in exam style |
+| [MCQ bank](../mcq-bank/01-agentic-architecture.md) | All | 65 exam-level practice questions |
 
 ---
 

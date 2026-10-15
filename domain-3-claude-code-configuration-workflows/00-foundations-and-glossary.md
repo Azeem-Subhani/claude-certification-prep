@@ -100,7 +100,7 @@ my-project/
 | [04](04-plan-mode-vs-direct-execution.md) | 3.4 Plan vs execute | Plan big/uncertain work; execute small/clear work |
 | [05](05-iterative-refinement.md) | 3.5 Iterative refinement | Examples, tests, interviews, and smart feedback batching |
 | [06](06-ci-cd-integration.md) | 3.6 CI/CD | Run Claude Code safely and usefully in pipelines |
-| [07](07-scenario-practice-questions.md) | All | Practice questions |
+| [MCQ bank](../mcq-bank/03-claude-code-configuration.md) | All | 48 exam-level practice questions |
 
 ---
 

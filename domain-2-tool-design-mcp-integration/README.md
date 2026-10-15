@@ -37,7 +37,7 @@ The objectives below are paraphrased from the guide for study purposes. Check ex
 | [04 · MCP Server Integration](04-mcp-server-integration.md) | 2.4: `.mcp.json` vs `~/.claude.json`, env var expansion, resources, community servers |
 | [05 · Built-in Tools](05-built-in-tools.md) | 2.5: Read, Write, Edit, Bash, Grep, Glob and incremental exploration |
 | [Anti-patterns](anti-patterns.md) | Wrong approaches, why they fail, what to do instead, and exam traps |
-| [06 · Practice Questions](06-scenario-practice-questions.md) | 25 original scenario questions with explanations |
+| [MCQ bank: Domain 2](../mcq-bank/02-tool-design-mcp.md) | 43 exam-level practice questions with answer key and explanations |
 
 Sources: the exam guide PDF, plus [Claude Code MCP docs](https://code.claude.com/docs/en/mcp), [MCP specification: Tools](https://modelcontextprotocol.io/specification/2025-06-18/server/tools), and Anthropic's tool-use docs for `tool_choice`. Where the guide and current product behavior differ (e.g. forced `tool_choice` on the newest models), the notes give both.
 
@@ -188,7 +188,3 @@ Conflicts with the exam guide are listed in [REVIEW_NEEDED.md](../REVIEW_NEEDED.
 | C15b | Remote vs local server config | CONFIRMED | `"type": "http"` + `"url"`. stdio servers use `command` + `args`. | code.claude.com/docs/en/mcp |
 | C15c | `${VAR}` and `${VAR:-default}` | CONFIRMED | Works in `command`, `args`, `env`, `url`, `headers`. | code.claude.com/docs/en/mcp |
 | C15d | All servers' tools are available at once | PARTIAL | All connected servers' tools are offered together. But by default, tool search loads full schemas only when they are needed. | code.claude.com/docs/en/mcp |
-
-## My notes
-
-<!-- Add study notes, lab links, and weak areas here -->

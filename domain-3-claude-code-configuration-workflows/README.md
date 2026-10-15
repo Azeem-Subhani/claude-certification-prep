@@ -39,7 +39,7 @@ The objectives below are paraphrased from the guide for study purposes. Check ex
 | [05 · Iterative Refinement](05-iterative-refinement.md) | 3.5: input/output examples, test-driven iteration, interview pattern, batching feedback |
 | [06 · CI/CD Integration](06-ci-cd-integration.md) | 3.6: `-p`, `--output-format json`, `--json-schema`, independent review, re-review hygiene |
 | [Anti-patterns](anti-patterns.md) | Wrong approaches, why they fail, what to do instead, and exam traps |
-| [07 · Practice Questions](07-scenario-practice-questions.md) | 25 original scenario questions with explanations |
+| [MCQ bank: Domain 3](../mcq-bank/03-claude-code-configuration.md) | 48 exam-level practice questions with answer key and explanations |
 
 Sources: the exam guide PDF, plus Claude Code docs: [Memory / CLAUDE.md](https://code.claude.com/docs/en/memory), [Skills](https://code.claude.com/docs/en/skills), [Run Claude Code programmatically](https://code.claude.com/docs/en/headless). Where the guide and current product behavior differ (e.g. commands now merged into skills, `--bare` skipping CLAUDE.md), the notes give both.
 
@@ -199,7 +199,3 @@ Conflicts with the exam guide are listed in [REVIEW_NEEDED.md](../REVIEW_NEEDED.
 | C17 | Settings files | CONFIRMED | `~/.claude/settings.json` (you, all projects), `.claude/settings.json` (shared, committed), `.claude/settings.local.json` (you, this project, gitignored), managed settings (organization). Precedence, highest first: managed, command line, project local, shared project, user. | code.claude.com/docs/en/settings |
 | C18 | Permission rules | CONFIRMED | `permissions.allow` / `deny` lists, for example `"Bash(npm run test *)"` and `"Read(./.env)"`. The hooks page says to use the permission system, not a hook, to enforce a hard allow or deny. | code.claude.com/docs/en/settings; code.claude.com/docs/en/hooks |
 | C19 | Claude Code hooks | CONFIRMED | Hooks are set in settings files. A PreToolUse command hook blocks a call by exiting with code 2, or by returning `permissionDecision: "deny"`. A hook that times out does not block by default. The docs call CLAUDE.md the place for static conventions. | code.claude.com/docs/en/hooks |
-
-## My notes
-
-<!-- Add study notes, lab links, and weak areas here -->
