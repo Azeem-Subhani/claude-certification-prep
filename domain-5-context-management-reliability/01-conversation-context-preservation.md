@@ -145,7 +145,7 @@ Dates, source locations, and methodology let the synthesizer weigh and cite find
 
 The API is stateless. To keep the conversation **coherent**, each request must include the **conversation history** the model needs: earlier messages, its own tool calls, and their results. If you drop turns carelessly, the model may repeat questions, contradict earlier answers, or lose track of what was done.
 
-This is why the techniques above matter: you **keep sending history**, so you **control what goes into it** (trimmed tool results, case facts, structured issue lists) instead of cutting history randomly.
+This is why the techniques above matter. You **keep sending history**, so you **control what goes into it**. Use trimmed tool results, case facts, and structured issue lists instead of cutting history randomly.
 
 ### Prompt caching (know that it exists)
 

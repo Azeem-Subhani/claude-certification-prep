@@ -52,7 +52,7 @@ So batches suit **single-shot** tasks: "extract these fields", "summarize this f
 
 ## 4. Calculating submission frequency from an SLA
 
-If you promise results within an **SLA** (e.g. 30 hours), and batch processing can take **up to 24 hours**, you must **submit often enough** that the waiting time before submission plus processing time stays within the SLA.
+Say you promise results within an **SLA** (e.g. 30 hours). Batch processing can take **up to 24 hours**. So you must **submit often enough** that the waiting time before submission plus processing time stays within the SLA.
 
 **Formula:**
 

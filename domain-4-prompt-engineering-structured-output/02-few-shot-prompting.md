@@ -96,7 +96,7 @@ Example B (genuine issue: REPORT)
 Why an issue: Swallows every error, including bugs and outages, with no logging.
 ```
 
-This **reduces false positives** (the model learns "catching an exception" isn't automatically bad) while still catching real problems, and it **generalizes** to similar patterns not shown.
+This **reduces false positives**. The model learns "catching an exception" isn't automatically bad, while it still catches real problems. It also **generalizes** to similar patterns not shown.
 
 ---
 
@@ -166,7 +166,7 @@ This connects to schema design in [03](03-structured-output-tool-use-schemas.md)
 - Citations in bibliographies were missed; only inline ones were found.
 - Output format varied (some fields renamed, some nested differently).
 
-**Change:** Added **four few-shot examples**: one inline-citation paper, one bibliography paper, one with methodology embedded in prose, and one with a missing sample size (`null`, with "Why: not stated").
+**Change:** Added **four few-shot examples**. They were one inline-citation paper, one bibliography paper, and one with methodology embedded in prose. The last had a missing sample size (`null`, with "Why: not stated").
 
 **Result:** Invented sample sizes dropped sharply on the validation set, bibliography citations were captured, and the format became consistent.
 

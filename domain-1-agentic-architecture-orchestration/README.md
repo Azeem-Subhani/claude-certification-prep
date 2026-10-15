@@ -40,7 +40,7 @@ The objectives below are paraphrased from the guide for study purposes. Check ex
 | [Anti-patterns](anti-patterns.md) | Wrong approaches, why they fail, what to do instead, and exam traps |
 | [MCQ bank: Domain 1](../mcq-bank/01-agentic-architecture.md) | 65 exam-level practice questions with answer key and explanations |
 
-Sources: the exam guide PDF, plus Anthropic docs for SDK details: [Agent SDK hooks](https://code.claude.com/docs/en/agent-sdk/hooks), [Agent SDK sessions](https://code.claude.com/docs/en/agent-sdk/sessions), [Agent SDK subagents](https://code.claude.com/docs/en/agent-sdk/subagents), [Claude Code sessions](https://code.claude.com/docs/en/sessions), [Handling tool calls](https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls). Where the guide and current docs differ (e.g. `Task` vs `Agent` tool name), the notes give both.
+Sources: the exam guide PDF. For SDK details, see these Anthropic docs: [Agent SDK hooks](https://code.claude.com/docs/en/agent-sdk/hooks), [Agent SDK sessions](https://code.claude.com/docs/en/agent-sdk/sessions), [Agent SDK subagents](https://code.claude.com/docs/en/agent-sdk/subagents), [Claude Code sessions](https://code.claude.com/docs/en/sessions), [Handling tool calls](https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls). Where the guide and current docs differ (e.g. `Task` vs `Agent` tool name), the notes give both.
 
 ---
 
@@ -118,7 +118,7 @@ Sources: the exam guide PDF, plus Anthropic docs for SDK details: [Agent SDK hoo
 **Do**
 - [ ] Match the pattern to the work: prompt chaining for predictable multi-aspect reviews, dynamic decomposition for open-ended investigation
 - [ ] Split large code reviews into per-file local passes plus a separate cross-file pass to avoid attention dilution
-- [ ] For open-ended tasks (e.g., "add comprehensive tests to a legacy codebase"): map structure first, find high-impact areas, then build a prioritized plan that adapts as dependencies surface
+- [ ] For open-ended tasks (e.g., "add comprehensive tests to a legacy codebase"): map the structure first and find high-impact areas. Then build a prioritized plan that adapts as dependencies surface
 
 ## 1.7 Manage session state, resumption, and forking
 

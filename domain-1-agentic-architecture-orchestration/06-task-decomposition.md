@@ -104,7 +104,7 @@ This is a classic exam example of prompt chaining for **large code reviews**.
 ```
 
 1. **Local passes:** one focused pass per file. Looks for bugs, style, and logic errors *inside* that file.
-2. **Integration pass:** one separate pass that looks at how files work *together*: changed function signatures, data passed between modules, consistent error handling, missing updates in callers.
+2. **Integration pass:** one separate pass that looks at how files work *together*. It checks changed function signatures, data passed between modules, consistent error handling, and missing updates in callers.
 
 **Why this works:** each pass has small, focused context, so there is no attention dilution. The integration pass catches problems that no single-file pass can see.
 

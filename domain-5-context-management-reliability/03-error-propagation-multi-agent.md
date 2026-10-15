@@ -2,7 +2,7 @@
 
 **Exam link:** Task Statement 5.3: *Implement error propagation strategies across multi-agent systems.*
 **Prerequisites:** Domain 2 [02 · Structured Error Responses](../domain-2-tool-design-mcp-integration/02-structured-error-responses.md) (error categories, `isRetryable`, local recovery, failed vs empty), Domain 1 [02 · Multi-Agent Orchestration](../domain-1-agentic-architecture-orchestration/02-multi-agent-orchestration.md).
-**Scope note:** Domain 2 covered how a **tool** reports errors and how a **subagent** recovers locally. This file is about the **system level**: what the **coordinator** needs to recover, the two opposite anti-patterns, and how errors become **coverage annotations** in the final output.
+**Scope note:** Domain 2 covered how a **tool** reports errors and how a **subagent** recovers locally. This file is about the **system level**. It covers what the **coordinator** needs to recover and the two opposite anti-patterns. It also covers how errors become **coverage annotations** in the final output.
 
 ---
 

@@ -37,7 +37,7 @@ Ask: **"What happens if this step is skipped once?"**
 - Wrong tone in an email → prompt guidance is fine.
 - Refund sent to the wrong customer, data shown to the wrong person, regulatory breach → **programmatic enforcement is required**.
 
-> **Exam pattern:** If a question describes a required sequence for **critical business logic** (identity, money, compliance) and the agent *sometimes* skips a step, the correct answer is a **programmatic prerequisite**. Answers like "make the prompt stronger", "add few-shot examples", or "say it is mandatory in capitals" are distractors: they reduce the failure rate but cannot remove it.
+> **Exam pattern:** A question may describe a required sequence for **critical business logic** (identity, money, compliance). If the agent *sometimes* skips a step, the correct answer is a **programmatic prerequisite**. Answers like "make the prompt stronger", "add few-shot examples", or "say it is mandatory in capitals" are distractors. They reduce the failure rate but cannot remove it.
 
 ---
 
@@ -172,7 +172,7 @@ Avoid weak signals such as "the customer sounds angry" alone, or the model's sel
 
 **Attempt 1:** The team added *"You MUST call get_customer first"* to the prompt, plus examples. Skips dropped but did not stop.
 
-**Attempt 2 (fix):** A **prerequisite gate** that blocks `lookup_order` and `process_refund` until `get_customer` returns a verified ID, and checks that the refund's customer ID matches it. Skips fell to **zero**, because the code makes skipping impossible.
+**Attempt 2 (fix):** A **prerequisite gate** that blocks `lookup_order` and `process_refund` until `get_customer` returns a verified ID. It also checks that the refund's customer ID matches it. Skips fell to **zero**, because the code makes skipping impossible.
 
 **Extra improvement:** For cases needing escalation, the agent now fills in a **structured handoff** form. Human agents report much shorter handling times because they no longer re-interview customers.
 

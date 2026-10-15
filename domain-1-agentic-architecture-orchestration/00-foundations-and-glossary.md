@@ -15,7 +15,7 @@ On its own, an LLM can only *talk*. It cannot read your database, send an email,
 - A **tool** is a function that *your* code runs on Claude's behalf (for example `get_customer`, `search_web`, `run_tests`).
 - Claude does not run the tool itself. Claude *asks* for the tool by writing a structured request. Your code runs it and sends back the result.
 
-An **agent** is an LLM that works in a cycle: it decides what to do, uses tools, looks at the results, and decides again, until the task is done. The important word is **decides**. In an agent, the model chooses the next step.
+An **agent** is an LLM that works in a cycle. It decides what to do, uses tools, and looks at the results. Then it decides again, until the task is done. The important word is **decides**. In an agent, the model chooses the next step.
 
 ### Real-world example
 
@@ -113,7 +113,7 @@ Many exam questions are about Agent SDK features. Files [03](03-subagent-configu
 - **Deterministic** = always gives the same result. Code is deterministic: `if amount > 500: block()` will block every time.
 - **Probabilistic** = usually gives the expected result, but not always. A model following a prompt is probabilistic. Even a very good prompt has a small failure rate.
 
-> **Exam pattern:** When a rule *must always* hold (money, security, legal compliance), the correct answer is almost always a **code-based control** (a hook, a gate, a check), not "improve the prompt" or "add examples".
+> **Exam pattern:** Some rules *must always* hold (money, security, legal compliance). For these, the correct answer is almost always a **code-based control** (a hook, a gate, a check). It is not "improve the prompt" or "add examples".
 
 ### 4.2 Context must be explicit
 
@@ -178,7 +178,7 @@ A: The harness sends the full message history, including earlier tool calls and 
 A: No. If your code decides the order of calls, it is a workflow that uses tools. It becomes agentic when the model chooses which tool to use next.
 
 **Q: When should I *not* build an agent?**
-A: When the steps are known and fixed, when errors are very costly and hard to catch, or when a single model call does the job. A workflow is cheaper, faster, and easier to test.
+A: Use a workflow when the steps are known and fixed. Use it when errors are very costly and hard to catch. Use it when a single model call does the job. A workflow is cheaper, faster, and easier to test.
 
 **Q: What is the difference between the Claude API and the Agent SDK?**
 A: The Claude API is the basic request/response endpoint; you write the loop and tools yourself. The Agent SDK gives you a full harness (loop, built-in tools, subagents, hooks, sessions) on top of it.

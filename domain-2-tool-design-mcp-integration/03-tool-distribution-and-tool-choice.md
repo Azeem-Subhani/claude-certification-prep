@@ -141,7 +141,7 @@ The forced call handles **step 1**. Later steps are processed in **follow-up tur
 
 ### Pattern B: Guarantee a tool call instead of chat
 
-**Goal:** In a data-extraction pipeline, the model must **always** return data through a tool (for structured output), never a friendly sentence like "Here's what I found…".
+**Goal:** In a data-extraction pipeline, the model must **always** return data through a tool (for structured output). It must never return a friendly sentence like "Here's what I found…".
 
 ```python
 response = client.messages.create(

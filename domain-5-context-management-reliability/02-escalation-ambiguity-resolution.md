@@ -133,7 +133,7 @@ Agent: "I found more than one account under that name. To make sure I have the r
         could you share the email address or the last 4 digits of the phone number on the account?"
 ```
 
-The same rule applies to other ambiguity: two open orders and the customer says "cancel my order" → ask which one (see the few-shot pattern in Domain 4 · [02](../domain-4-prompt-engineering-structured-output/02-few-shot-prompting.md)).
+The same rule applies to other ambiguity. Say there are two open orders and the customer says "cancel my order". Ask which one (see the few-shot pattern in Domain 4 · [02](../domain-4-prompt-engineering-structured-output/02-few-shot-prompting.md)).
 
 ---
 

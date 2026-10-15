@@ -2,7 +2,7 @@
 
 **Exam link:** Task Statement 4.6: *Design multi-instance and multi-pass review architectures.*
 **Prerequisites:** Domain 1 [06 · Task Decomposition](../domain-1-agentic-architecture-orchestration/06-task-decomposition.md) (per-file + cross-file passes), Domain 3 [06 · CI/CD](../domain-3-claude-code-configuration-workflows/06-ci-cd-integration.md) (independent reviewer in CI).
-**Scope note:** Those files introduced per-file passes and the independent CI reviewer. This file explains **why self-review fails** (and why extended thinking doesn't fix it), how to **combine** instances and passes into a review architecture, and how to use **confidence for routing**.
+**Scope note:** Those files introduced per-file passes and the independent CI reviewer. This file explains **why self-review fails**, and why extended thinking doesn't fix it. It shows how to **combine** instances and passes into a review architecture. It also shows how to use **confidence for routing**.
 
 ---
 
@@ -45,7 +45,7 @@ spec + codebase ──▶ writes code ──▶ diff ──▶ diff + spec + rev
      (reasoning stays here)                 (no access to generator reasoning)
 ```
 
-Because it judges the result **on its own merits**, it notices when the code doesn't match the spec, even when the generator's reasoning "explained" why it should.
+It judges the result **on its own merits**. So it notices when the code doesn't match the spec, even when the generator's reasoning "explained" why it should.
 
 **Same idea for extraction:** a second instance can verify an extraction against the source document without seeing how the first instance reasoned.
 
@@ -62,7 +62,7 @@ For a large multi-file change, combine **focused passes**:
 | **Per-file local passes** (one per file, can run in parallel) | One file's diff + its immediate context | Bugs, security, and logic issues **inside** that file |
 | **Cross-file integration pass(es)** | Interface changes, data flow between modules, summaries of local findings | Broken contracts, **data-flow** problems across files, inconsistent handling |
 
-**Why:** One giant pass suffers **attention dilution** (shallow review of later files) and produces **contradictory findings** (approving a pattern in one file, flagging it in another). Focused passes give even depth and consistent results.
+**Why:** One giant pass suffers **attention dilution** (shallow review of later files). It also produces **contradictory findings** (approving a pattern in one file, flagging it in another). Focused passes give even depth and consistent results.
 
 ---
 
@@ -95,7 +95,7 @@ Self-reported confidence is only useful if it is **calibrated**: when the model 
 3. **Set thresholds from the data**, not from intuition.
 4. Re-check periodically.
 
-> **How this fits with [01](01-explicit-criteria-precision.md):** "Only report high-confidence findings" in the prompt does **not** fix precision by itself. Confidence works as a **routing signal** inside a designed pipeline, **after** explicit criteria define what to look for, and once it has been **calibrated** against real outcomes.
+> **How this fits with [01](01-explicit-criteria-precision.md):** "Only report high-confidence findings" in the prompt does **not** fix precision by itself. Confidence works as a **routing signal** inside a designed pipeline. It works **after** explicit criteria define what to look for. It also needs to be **calibrated** against real outcomes.
 
 ---
 
