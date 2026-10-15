@@ -86,6 +86,9 @@ Verdicts: **CONFIRMED** = docs agree. **PARTIAL** = docs agree with limits. **CO
 | C15b | Remote vs local server config | CONFIRMED | `"type": "http"` + `"url"`. stdio servers use `command` + `args`. | same |
 | C15c | `${VAR}` and `${VAR:-default}` | CONFIRMED | Works in `command`, `args`, `env`, `url`, `headers`. | same |
 | C15d | All servers' tools are available at once | PARTIAL | All connected servers' tools are offered together. But by default, tool search loads full schemas only when they are needed. | same |
+| C17 | Settings files | CONFIRMED | `~/.claude/settings.json` (you, all projects), `.claude/settings.json` (shared, committed), `.claude/settings.local.json` (you, this project, gitignored), managed settings (organization). Precedence, highest first: managed, command line, project local, shared project, user. | code.claude.com/docs/en/settings |
+| C18 | Permission rules | CONFIRMED | `permissions.allow` / `deny` lists, for example `"Bash(npm run test *)"` and `"Read(./.env)"`. The hooks page says to use the permission system, not a hook, to enforce a hard allow or deny. | code.claude.com/docs/en/settings; code.claude.com/docs/en/hooks |
+| C19 | Claude Code hooks | CONFIRMED | Hooks are set in settings files. A PreToolUse command hook blocks a call by exiting with code 2, or by returning `permissionDecision: "deny"`. A hook that times out does not block by default. The docs call CLAUDE.md the place for static conventions. | code.claude.com/docs/en/hooks |
 | C16 | Git worktrees | CONFIRMED | `--worktree` / `-w` starts Claude in its own worktree. | .../cli-reference |
 
 ## D. Exam facts (from the official exam guide PDF only)
