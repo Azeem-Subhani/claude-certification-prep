@@ -15,6 +15,17 @@ Which prompt change is BEST?
 - C. Ask Claude to score each finding and hide every finding that scores below 0.8.
 - D. Tell Claude to be conservative and keep each review to its five most important findings.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Explicit report and skip categories tell Claude what counts as a finding. This removes the naming and style noise at its source. Vague wording does not change what Claude treats as an issue.
+
+**Closest distractor (A):** "Only report high-confidence findings" is a general instruction that does not improve precision like specific categories do.
+
+</details>
+
 ### Q2 · Task 4.3 · Easy
 
 A logistics team moved its shipment extraction from "reply only with JSON" to tool_use with a JSON schema. A manager asks what kind of error this change removes.
@@ -25,6 +36,17 @@ Which error does the change remove?
 - B. Line item weights that do not add up to the total weight on the document.
 - C. Malformed JSON, such as missing brackets or extra text around the object.
 - D. Invented values for fields that the source document does not contain.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** A tool with a JSON schema gives structured input that is always parseable. This removes syntax errors such as missing brackets or extra text. It does not check what the values mean.
+
+**Closest distractor (D):** Invented values are a semantic problem, fixed by nullable fields, not by the move to tool_use.
+
+</details>
 
 ### Q3 · Task 4.5 · Hard
 
@@ -37,6 +59,17 @@ Which plan is BEST for cutting cost?
 - C. Batch all three workloads, and send call summaries as small batches to keep the wait short.
 - D. Keep all three workloads synchronous, because batch results come back in a different order.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** The call summary blocks a live customer, so it must stay synchronous. The nightly job has an eight-hour window, but a batch can take up to 24 hours. Only the five-day fraud scan fits the batch window.
+
+**Closest distractor (B):** Fast test batches are not a guarantee, and the nightly window is shorter than the 24-hour processing limit.
+
+</details>
+
 ### Q4 · Task 4.2 · Medium
 
 Brightdesk's support agent writes internal case notes with three parts: summary, steps tried, and next action. The prompt has three example notes, and most notes follow the layout. Notes for tickets with two or more separate problems often merge them into one summary.
@@ -47,6 +80,17 @@ What is the BEST change?
 - B. Add ten more example notes, picked at random from last month's tickets.
 - C. Remove the examples and replace them with a detailed written layout specification.
 - D. Add one or two example notes for multi-problem tickets that handle each problem separately.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** The existing examples work for simple tickets. The failures come from a case the examples do not show. One or two targeted examples for multi-problem tickets cover the gap.
+
+**Closest distractor (A):** Adding more written rules is the anti-pattern when examples are the tool that fixes format consistency.
+
+</details>
 
 ### Q5 · Task 4.4 · Hard
 
@@ -59,6 +103,17 @@ What is the BEST change to this plan?
 - C. Retry only the total mismatch, and set the provider ID to null with a human follow-up.
 - D. Retry only the provider ID failures, because math errors need code fixes, not model retries.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** A math mismatch is a fixable error, so a retry with the specific error can help. The provider ID is in a document that was not provided. No retry can create it, so null and human follow-up is right.
+
+**Closest distractor (B):** Sending total mismatches to humans wastes effort, because a retry with error feedback often fixes them.
+
+</details>
+
 ### Q6 · Task 4.6 · Easy
 
 A team uses Claude to generate database migration scripts. They want a second Claude instance to review each script before it runs. A developer suggests giving the reviewer the full generation transcript "so it understands the choices."
@@ -69,6 +124,17 @@ What should the reviewer receive?
 - B. The script plus the full generation transcript, so it can follow the original reasoning.
 - C. Only a short summary of the script that the generating session writes for it.
 - D. The generation transcript only, so it can check the reasoning instead of the code.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** An independent reviewer works best without the generator's reasoning. It then judges the script against the requirements with fresh eyes. The transcript would pull it toward the same decisions.
+
+**Closest distractor (B):** Sharing the full transcript recreates the self-review problem the second instance is meant to avoid.
+
+</details>
 
 ### Q7 · Task 4.3 · Hard
 
@@ -81,6 +147,17 @@ What is the BEST schema change?
 - C. Make the boolean optional, so Claude can leave it out when renewal is not mentioned.
 - D. Use an enum of yes, no, and unclear, and allow null when renewal is not mentioned.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** An "unclear" enum value captures truly ambiguous wording. A nullable value captures absence without inventing an answer. This keeps "no renewal" separate from both other cases.
+
+**Closest distractor (C):** Making the field optional fixes the absent case but still forces ambiguous contracts into true or false.
+
+</details>
+
 ### Q8 · Task 4.1 · Easy
 
 Kestrel Market uses Claude to flag product listings that may break seller policy. The prompt says "flag anything suspicious." Reviewers say most flags are listings with strong sales language, which the policy allows.
@@ -91,6 +168,17 @@ Which prompt change is BEST?
 - B. Name the policy violations to flag, and state that strong sales language is allowed.
 - C. Ask Claude for a confidence score and drop flags below a fixed threshold.
 - D. Tell Claude to flag a listing only when it is sure a reviewer would agree.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Naming the violations and the allowed case gives Claude explicit criteria. This directly removes flags on allowed sales language. Vague words like "suspicious" leave the decision open.
+
+**Closest distractor (C):** Confidence thresholds are an anti-pattern for false positives when the criteria themselves are unclear.
+
+</details>
 
 ### Q9 · Task 4.2 · Hard
 
@@ -103,6 +191,17 @@ What is the BEST fix?
 - C. Add an instruction to read the whole contract carefully before it returns null.
 - D. Split each contract into sections and run the extraction on each section separately.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** The examples only show table layouts, so Claude misses paragraph-style deadlines. Adding examples from varied layouts teaches it where else to look. The data exists, so this targets the real gap.
+
+**Closest distractor (B):** A required field pushes Claude to invent a deadline when one is truly absent, which adds a new error.
+
+</details>
+
 ### Q10 · Task 4.4 · Medium
 
 To save tokens, Pellet Freight's retry step sends only the failed JSON and the validator error. The error reads "weight_kg must be a number, got string." Retries return a number. However, the number often does not match the bill of lading.
@@ -113,6 +212,17 @@ What is the BEST change?
 - B. Change weight_kg to a string type, so the validator accepts the original text.
 - C. Raise the retry limit, so Claude has more chances to reach the right value.
 - D. Include the original bill of lading in the retry, with the failed output and error.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** A retry needs the original document, the failed output, and the specific error. Without the source, Claude can only guess a number. With the bill of lading, it can find the real weight and convert it.
+
+**Closest distractor (C):** More retries without the source document only give more chances to guess.
+
+</details>
 
 ### Q11 · Task 4.5 · Easy
 
@@ -125,6 +235,17 @@ How should the team match each result to its product?
 - C. Set a custom_id on each request, and match each result by that value.
 - D. Submit one batch per product, so each batch holds a single result.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** Batch results can come back in any order. A custom_id on each request is the field used to match results to inputs.
+
+**Closest distractor (A):** Result order is not guaranteed to match submission order.
+
+</details>
+
 ### Q12 · Task 4.6 · Hard
 
 A CI review agent checks PRs in a payments monorepo. A 25-file PR changes a currency rounding helper and its callers in several services. The single-pass review gave detailed comments on the first files and thin comments on later ones. It also missed that one caller still uses the old rounding signature. The team proposes a model with a larger context window.
@@ -135,6 +256,17 @@ What is the BEST change?
 - B. Review each file in its own pass, then run a separate pass on cross-file data flow.
 - C. Review each file in its own pass, then merge the per-file comments into one report.
 - D. Keep one pass, but tell Claude to give equal attention to every file in the PR.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Per-file passes fix the uneven attention across 25 files. The missed signature problem is a cross-file issue, so it needs its own integration pass. Both parts are needed.
+
+**Closest distractor (C):** Per-file passes alone fix the thin comments but still miss issues that cross file boundaries.
+
+</details>
 
 ### Q13 · Task 4.3 · Medium
 
@@ -147,6 +279,17 @@ Which tool_choice setting fits BEST?
 - C. {"type": "tool", "name": "lookup_order"}
 - D. "none"
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** "auto" lets Claude decide whether to call a tool or reply in text. That matches a mix of order questions and general questions.
+
+**Closest distractor (B):** "any" forces Claude to call some tool, so it could not answer policy questions in plain text.
+
+</details>
+
 ### Q14 · Task 4.1 · Hard
 
 A legal team uses Claude to flag risky clauses in vendor contracts. The prompt says "flag clauses that create significant risk." Lawyers dismiss most flags, and most of these are standard indemnity terms the firm accepts. A data scientist proposes adding a confidence score per flag and tuning a cutoff on 500 labeled contracts.
@@ -157,6 +300,17 @@ What should the architect do FIRST?
 - B. Add "only flag clauses you are highly confident are risky" to the system prompt.
 - C. Define which clause types to flag, and list the standard terms the firm accepts.
 - D. Add a second Claude pass that re-checks each flag and removes the weak ones.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** The root cause is a vague criterion, "significant risk." Clear clause types and an accepted-terms list fix that first. Confidence routing is useful only after clear criteria exist.
+
+**Closest distractor (A):** A calibrated cutoff on top of vague criteria filters noise without fixing what Claude is told to flag.
+
+</details>
 
 ### Q15 · Task 4.2 · Easy
 
@@ -169,6 +323,17 @@ Which technique BEST improves consistency?
 - C. Tell Claude to pick the first label that applies to the ticket.
 - D. Add a few borderline examples that explain why one label was chosen.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** Few-shot examples that show reasoning for unclear cases make judgments consistent. The written rules already exist and did not solve the problem.
+
+**Closest distractor (B):** Adding more detailed instructions is the anti-pattern when instructions have already failed.
+
+</details>
+
 ### Q16 · Task 4.4 · Easy
 
 An invoice extraction pipeline validates each result and retries failures with the specific error.
@@ -179,6 +344,17 @@ Which failure is a retry MOST likely to fix?
 - B. The tax amount was placed in the discount field of the output.
 - C. The payment terms are in a separate contract that was not provided.
 - D. The order date is printed on the invoice, but it is fully smudged.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** A value in the wrong field is a structure error, and the right value exists in the document. A retry with the specific error can fix it.
+
+**Closest distractor (D):** The date is printed, but it cannot be read, so a retry cannot recover it.
+
+</details>
 
 ### Q17 · Task 4.5 · Medium
 
@@ -191,6 +367,17 @@ What is the main problem with this plan?
 - C. Quarterly jobs of this size are too large for batch and need the synchronous API.
 - D. Batch results are kept for only 29 days, so the team must store them itself.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** Batch results stay available for 29 days. Auditors ask after six to eight weeks, so the team must download and store results itself.
+
+**Closest distractor (C):** A 20,000-request job is well within the batch limit of 100,000 requests.
+
+</details>
+
 ### Q18 · Task 4.6 · Medium
 
 A team uses Claude to write release notes from merged PRs. They want a second check for wrong claims before publishing. A developer proposes forking the generation session, so the reviewer "already knows the context."
@@ -201,6 +388,17 @@ What is the BEST approach?
 - B. Fork the session, and tell the reviewer to be critical of every claim it sees.
 - C. Use a fresh instance with the notes and the PR list, but not the generation history.
 - D. Use the same session, and ask it to list three possible errors before it approves.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** A fork copies the generation history, so the reviewer shares the same reasoning. A fresh instance with the notes and the source list checks claims independently.
+
+**Closest distractor (B):** Telling a forked reviewer to be critical does not remove the shared reasoning context.
+
+</details>
 
 ### Q19 · Task 4.3 · Hard
 
@@ -213,6 +411,17 @@ What is the BEST decision?
 - C. Delete the validators, and add prompt rules about date order and weekly totals instead.
 - D. Turn off strict mode and rely on the validators alone, since they catch every error type.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Strict schemas stop syntax errors but not cross-field errors like date order or wrong sums. A max_tokens stop means the output may be cut off. Code validation is still needed for both.
+
+**Closest distractor (A):** Strict mode matches the schema, but it cannot check meaning, and cut-off outputs are an exception.
+
+</details>
+
 ### Q20 · Task 4.2 · Medium
 
 A help desk agent has two tools: search_kb and create_ticket. The team already rewrote both tool descriptions and tested them. Messages like "my export is still broken" still sometimes create duplicate tickets when a search would have answered them. The model in use supports all tool_choice options.
@@ -223,6 +432,17 @@ What is the BEST next step?
 - B. Rewrite both tool descriptions again, with more detail on when to use each.
 - C. Set tool_choice to "any," so Claude must call one of the two tools on every message.
 - D. Merge the two tools into one tool that searches first and then creates a ticket.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** The descriptions are already improved, so the next step is examples. Examples with reasoning show how to handle unclear requests. Claude can then apply that judgment to new messages.
+
+**Closest distractor (B):** Better descriptions come first, but the team already did that, so more rewriting adds little.
+
+</details>
 
 ### Q21 · Task 4.1 · Medium
 
@@ -235,6 +455,17 @@ Which change BEST improves precision?
 - C. Add a second Claude pass that re-checks each injection finding before it is posted.
 - D. Report a query only when user input is joined into the SQL string.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** The criterion names the exact condition that makes a query risky. Queries with bound parameters do not match it, so they are skipped. This removes the false positives without hiding real injection risks.
+
+**Closest distractor (C):** A second pass adds cost but still uses the same vague rule, so the false alarms remain.
+
+</details>
+
 ### Q22 · Task 4.4 · Hard
 
 A contract extractor pulls the effective date. In some contracts, the cover page and the signature page show different dates. Retries switch between the two dates from one attempt to the next. The legal team has not set a rule for which page wins.
@@ -245,6 +476,17 @@ What is the BEST design?
 - B. Retry with the validator error until two attempts in a row return the same date.
 - C. Add a prompt rule that always uses the date shown on the signature page.
 - D. Make the date field nullable, so Claude returns null when it is not sure.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** The source contradicts itself, so no retry can find one right answer. Extracting both values with a conflict flag keeps the facts. A human can then decide.
+
+**Closest distractor (C):** Picking a page is a business decision the legal team has not made, so the extractor should not invent one.
+
+</details>
 
 ### Q23 · Task 4.5 · Hard
 
@@ -257,6 +499,17 @@ What is the BEST plan?
 - C. Keep the job on the synchronous API, because batch requests cannot include any tools.
 - D. Submit one batch per tool round trip, and wait for each batch before sending the next.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** A batch request cannot run a client-side tool loop, because each round trip needs a new request. The stock data is known in advance, so code can include it in each request. The job then fits one batch.
+
+**Closest distractor (D):** Chaining batches works in theory, but each round can take up to 24 hours and risks the three-day deadline.
+
+</details>
+
 ### Q24 · Task 4.3 · Easy
 
 An expense tool sorts receipts into an enum: travel, meals, software, or equipment. New kinds of expenses, such as conference fees, get forced into the wrong category.
@@ -267,6 +520,17 @@ What is the BEST schema change?
 - B. Add a prompt rule that tells Claude to choose the closest existing category.
 - C. Add an "other" value, plus a detail string field for the actual expense type.
 - D. Make the category field optional, so Claude can leave it blank when unsure.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** An "other" value with a detail string keeps the category list stable. It still records new expense types clearly.
+
+**Closest distractor (A):** Free text loses the consistency that an enum gives to downstream systems.
+
+</details>
 
 ### Q25 · Task 4.6 · Hard
 
@@ -279,6 +543,17 @@ What should the architect recommend?
 - C. Replace the independent review with extended thinking during generation.
 - D. Keep the independent review for every script, since errors reach the live ledger.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** The scripts change production financial data, so review quality matters more than cost. Last quarter's errors also show short scripts are not safe to skip.
+
+**Closest distractor (B):** A size cut-off looks like a fair trade-off, but the data shows short scripts carried most of the caught errors.
+
+</details>
+
 ### Q26 · Task 4.2 · Hard
 
 A claims triage prompt has six examples, each showing only the claim text and its label. Claude now labels any claim that mentions water as "flood," including burst pipes. Burst pipes belong in "plumbing." The team is also worried that the prompt keeps getting longer.
@@ -289,6 +564,17 @@ What is the BEST fix?
 - B. Add one rule to the prompt: "a burst pipe is never a flood claim, even with water damage."
 - C. Rework the examples to show short reasoning, with a burst-pipe and a flood case.
 - D. Add a confidence score, and send low-confidence water claims to an adjuster.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** Input-output examples without reasoning lead Claude to copy surface features. A few examples with reasons, including a contrasting pair, teach the real rule. This also keeps the prompt short.
+
+**Closest distractor (B):** A single rule fixes burst pipes but not the habit of matching surface words in other cases.
+
+</details>
 
 ### Q27 · Task 4.1 · Easy
 
@@ -301,6 +587,17 @@ Which prompt change is BEST?
 - C. Ask Claude to highlight at most three issues per call to keep the focus.
 - D. Tell Claude to think about what a manager would find most important.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** "Important" is vague, so Claude decides it differently each time. Naming the issue types gives explicit criteria and consistent highlights.
+
+**Closest distractor (C):** A cap on the number of highlights does not tell Claude which issues to pick.
+
+</details>
+
 ### Q28 · Task 4.4 · Medium
 
 Rally Freight uses tool_use to extract shipping labels. The JSON is always valid. However, Claude sometimes swaps the shipper and consignee addresses. The shipper must always be one of the customer's registered warehouses.
@@ -311,6 +608,17 @@ What is the BEST fix?
 - B. Check the shipper against registered warehouses in code, and retry with that error.
 - C. Switch from tool_use to a text reply, so Claude can explain which address is which.
 - D. Split each address into required street, city, and postal code fields, so Claude fills every part.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Swapped addresses are a semantic error, which a schema cannot catch. A code check against a known rule detects it. A retry with that specific failure helps Claude correct it.
+
+**Closest distractor (A):** Schema patterns check format, and both addresses already have a valid format.
+
+</details>
 
 ### Q29 · Task 4.3 · Medium
 
@@ -323,6 +631,17 @@ What is the BEST fix?
 - C. Make the field optional, so unclear country names are simply left blank.
 - D. Add a format rule for two-letter country codes, such as US, and use an enum in the schema.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** A format rule in the prompt, next to a schema constraint, gives the same value every time. This is the standard way to handle inconsistent source formats.
+
+**Closest distractor (A):** A nightly script runs too late, because the reports read each record right after extraction.
+
+</details>
+
 ### Q30 · Task 4.5 · Medium
 
 A team submits a nightly batch and starts a downstream reporting job two hours later. In testing, every batch finished within one hour. In production, the report sometimes runs on missing results.
@@ -333,6 +652,17 @@ What is the BEST change?
 - B. Keep the two-hour start, since most batches finish within one hour.
 - C. Split the batch into smaller batches, so each one finishes within two hours.
 - D. Set a priority flag on the batch, so it finishes inside the two-hour window.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** The Batches API has no latency guarantee and allows up to 24 hours. The downstream job should wait for the batch to end, not a fixed time.
+
+**Closest distractor (C):** Smaller batches may finish faster, but they still have no time guarantee.
+
+</details>
 
 ### Q31 · Task 4.2 · Easy
 
@@ -345,6 +675,17 @@ Which set of examples is BEST?
 - C. Thirty examples that cover every file type in the repository.
 - D. No examples, just a longer prose description of each field.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Two to four targeted examples that show the exact fields give a consistent format. A tricky case shows how to handle edge cases.
+
+**Closest distractor (A):** One simple example does not show how to handle harder findings.
+
+</details>
+
 ### Q32 · Task 4.6 · Medium
 
 A CI review pipeline runs independent per-file passes and an integration pass. Each finding has a confidence score. Last month, the team calibrated the scores against 400 labeled findings.
@@ -355,6 +696,17 @@ What should happen to findings with LOW confidence?
 - B. Post every finding on the PR with its score, so developers can decide for themselves.
 - C. Route them to a human reviewer, and post only high-confidence findings on the PR.
 - D. Re-run the same pass on low-confidence findings until their scores rise above the cutoff.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** The scores are calibrated, so they can drive routing. High-confidence findings go to developers. Low-confidence findings go to a human reviewer, not into the trash.
+
+**Closest distractor (B):** Posting everything puts low-confidence noise in front of developers and hurts trust.
+
+</details>
 
 ### Q33 · Task 4.1 · Hard
 
@@ -367,6 +719,17 @@ Which change BEST fixes both problems?
 - C. Move to a larger model that can judge clinical detail more accurately.
 - D. List the specific gaps to report, such as missing body side, and what to skip.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** Both symptoms come from one vague criterion, "sufficient detail." Naming the gaps to report and the cases to skip fixes both. It cuts the false flags and catches the misses.
+
+**Closest distractor (B):** Examples of good notes help a little, but they do not define which gaps must be reported.
+
+</details>
+
 ### Q34 · Task 4.4 · Easy
 
 A review bot adds a detected_pattern field to each finding, such as "unchecked-null-return." Developers can dismiss findings on the PR.
@@ -377,6 +740,17 @@ What is the MAIN value of this field?
 - B. It makes the JSON output valid, because each finding then has a fixed, typed category.
 - C. It shows which patterns developers dismiss, so prompt fixes can target them.
 - D. It raises Claude's confidence score for findings that match a pattern seen before.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** A detected_pattern field lets the team group dismissals by pattern. That shows which code constructs cause false positives. The team can then improve the prompt for those patterns.
+
+**Closest distractor (A):** The field supports analysis by the team, not skipping repeat findings inside one review.
+
+</details>
 
 ### Q35 · Task 4.3 · Hard
 
@@ -389,6 +763,17 @@ What is the BEST design?
 - C. Keep tool_choice "auto," and parse the text replies with a separate regex classifier.
 - D. Force the extraction tool, and add a prompt rule to write "N/A" in every field for non-invoices.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** Forcing the tool guarantees structured output. A document_type value for non-invoices records the case in data, not text. Nullable fields stop Claude from inventing invoice values.
+
+**Closest distractor (D):** "N/A" strings in every field are placeholder values that downstream code can mistake for real data.
+
+</details>
+
 ### Q36 · Task 4.2 · Medium
 
 In a multi-agent research system, a subagent extracts citations from sources. It works well on papers with a bibliography. It misses citations written inline in news-style reports. The prompt already says "citations may appear inline in the text."
@@ -399,6 +784,17 @@ What is the BEST change?
 - B. Add one or two examples that show citations extracted from inline text.
 - C. Make the citation list required, so the subagent must always return entries.
 - D. Create a second subagent that handles only inline-citation documents.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** The written instruction already exists and did not work. Examples that show extraction from inline text teach Claude to handle that structure.
+
+**Closest distractor (A):** A longer instruction repeats the approach that already failed.
+
+</details>
 
 ### Q37 · Task 4.5 · Easy
 
@@ -411,6 +807,17 @@ Which statement about the Batches API is correct?
 - C. Batch requests can run longer client-side tool loops than normal requests.
 - D. Processing costs 50% less than the same calls on the standard API.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** The Batches API charges 50% of standard prices. Speed is not guaranteed, and the main benefit is lower cost for non-urgent work.
+
+**Closest distractor (A):** Most batches finish within an hour, but processing can take up to 24 hours.
+
+</details>
+
 ### Q38 · Task 4.6 · Hard
 
 A code review pipeline already uses independent per-file passes for large PRs. The reports now contain contradictions. The pass on file A says a shared helper validates input. The pass on file B flags missing validation on the same call path. A teammate notes that the per-file passes use a smaller model to save cost.
@@ -421,6 +828,17 @@ What is the BEST change?
 - B. Go back to one pass over all files, so Claude sees every file together.
 - C. Run each per-file pass twice, and keep only findings that appear both times.
 - D. Switch the per-file passes to a larger model with a bigger context window.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** Per-file passes cannot see how files connect, so they contradict each other on shared paths. A cross-file integration pass resolves this. The model size is a red herring.
+
+**Closest distractor (C):** Running each pass twice improves repeatability, but neither pass can see the other file.
+
+</details>
 
 ### Q39 · Task 4.1 · Medium
 
@@ -433,6 +851,17 @@ Which change is BEST?
 - C. Add the Result wrapper to the criteria as an accepted pattern to skip.
 - D. Remove every pattern and convention finding from the review scope.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** Explicit criteria should list local patterns to skip. Naming the accepted Result pattern removes the false positives and keeps other convention checks.
+
+**Closest distractor (D):** Removing all convention findings is too broad and drops useful checks.
+
+</details>
+
 ### Q40 · Task 4.4 · Hard
 
 An extraction pipeline has three problems. About 1% of text-mode replies are malformed JSON. Some outputs put the due date in the issue_date field. Some PO (purchase order) numbers are missing because the documents do not contain them. The team wants one plan that fixes each problem with the right tool.
@@ -443,6 +872,17 @@ Which plan is BEST?
 - B. Use tool_use for the malformed JSON, and make every field required to stop missing values.
 - C. Use tool_use for syntax, retry misplaced dates with the error, and retry absent POs with a stronger prompt.
 - D. Use tool_use for syntax, retry misplaced dates with the error, and set absent POs to null.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** tool_use fixes syntax errors. A retry with the error fixes misplaced values. Data that is not in the document needs null and human review, not more attempts.
+
+**Closest distractor (C):** No prompt or retry can create a PO number that the document does not contain.
+
+</details>
 
 ### Q41 · Task 4.3 · Medium
 
@@ -455,6 +895,17 @@ Where should the code read the extracted data?
 - C. From a second request that asks Claude to return the tool arguments as text.
 - D. From the tool_result block that the API adds after the tool call.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** The structured data lives in the input field of the tool_use content block. Any text block is optional and is not the extraction result.
+
+**Closest distractor (D):** Your own code sends tool_result blocks; the API does not add them to Claude's response.
+
+</details>
+
 ### Q42 · Task 4.2 · Hard
 
 A parcel pipeline extracts package weight into weight_kg (nullable) and weight_is_estimate (boolean). Notes often say "a bit over 2 kg" or "about 3 lbs." Claude sometimes returns exact numbers with weight_is_estimate set to false. When no weight is mentioned, it sometimes invents one. A written rule, "never invent weights," did not help.
@@ -465,6 +916,17 @@ What is the BEST next step?
 - B. Make the written rule stronger with capital letters and repeat it at the end.
 - C. Add examples that map vague amounts to an estimate flag and missing weights to null.
 - D. Retry each extraction with the message "weight may be invented" until it changes.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** Few-shot examples reduce hallucination for informal measurements and absent values. They show exactly how to map vague amounts and missing weights. The written rule already failed.
+
+**Closest distractor (B):** Stronger wording is still just more instruction, which already did not work.
+
+</details>
 
 ### Q43 · Task 4.5 · Hard
 
@@ -477,6 +939,17 @@ What is the BEST plan?
 - C. Use the synchronous API, because a weekly job of this size cannot use batches.
 - D. Put ten documents into each request, so the full job fits inside one batch.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** One batch can hold up to 100,000 requests or 256 MB. Splitting into several batches keeps the batch discount. A custom_id per document keeps results easy to match.
+
+**Closest distractor (D):** Bundling documents reduces the count, but it makes results harder to match and to resend when one fails.
+
+</details>
+
 ### Q44 · Task 4.6 · Easy
 
 A developer asks Claude to review code that Claude wrote earlier in the same session. The review finds few problems, but later testing finds several.
@@ -487,6 +960,17 @@ What is the MOST likely reason the self-review was weak?
 - B. The model cannot read code that it produced earlier in the session.
 - C. Review requests are ignored when they follow a generation step.
 - D. The session keeps its own reasoning, so it rarely questions its choices.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** A model that keeps its generation reasoning is less likely to question its own decisions. That is why an independent instance catches more issues.
+
+**Closest distractor (A):** Context limits can matter in long sessions, but they are not the main reason self-review fails.
+
+</details>
 
 ### Q45 · Task 4.1 · Medium
 
@@ -499,6 +983,17 @@ Which instruction is BEST?
 - C. "Flag missing tests only when your confidence is above 0.8, and skip the rest."
 - D. "Report no more than three missing tests in each PR, ranked by file size."
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** The instruction names what to report and what to skip. This removes trivial findings and keeps the useful ones.
+
+**Closest distractor (C):** A confidence cutoff does not define which missing tests are worth reporting.
+
+</details>
+
 ### Q46 · Task 4.4 · Medium
 
 A hospital discharge extractor retries failed validations with the original document, the failed output, and the specific error. Most failures pass on the first retry. A few documents still fail the same check after two retries.
@@ -509,6 +1004,17 @@ What should the pipeline do with these documents?
 - B. Keep retrying until the output passes, since each retry includes the error.
 - C. Accept the last output, and turn off the failing check for that document.
 - D. Restart with the original request and no error, to avoid bias from earlier tries.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** Retries help with fixable errors, but they have limits. If the same check keeps failing, the document needs human review. The errors give the reviewer a clear starting point.
+
+**Closest distractor (B):** Unlimited retries waste cost when the cause may be something a retry cannot fix.
+
+</details>
 
 ### Q47 · Task 4.3 · Medium
 
@@ -521,6 +1027,17 @@ What is the BEST schema change?
 - C. Add an "unclear" value to the enum for emails with mixed or ambiguous tone.
 - D. Add an "other" value with a free-text field that describes the tone.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** An "unclear" enum value lets Claude mark truly ambiguous cases. Analysts can then find them instead of seeing forced labels.
+
+**Closest distractor (D):** "other" plus detail is for new categories, not for tone that fits several existing labels.
+
+</details>
+
 ### Q48 · Task 4.2 · Medium
 
 A coverage agent is asked to "find test coverage gaps." It reports only files with low overall coverage. It misses untested else branches inside well-covered files. The prompt already explains what a branch-level gap is.
@@ -532,292 +1049,13 @@ What is the BEST change?
 - C. Ask Claude to read every test file in full before it reports any coverage gaps.
 - D. Add two examples that show an untested else branch reported as a gap.
 
-## Answer key
+<details>
+<summary>Show answer</summary>
 
-### Q1 · B
-
-**Why B is correct:** Explicit report and skip categories tell Claude what counts as a finding. This removes the naming and style noise at its source. Vague wording does not change what Claude treats as an issue.
-
-**Closest distractor (A):** "Only report high-confidence findings" is a general instruction that does not improve precision like specific categories do.
-
-### Q2 · C
-
-**Why C is correct:** A tool with a JSON schema gives structured input that is always parseable. This removes syntax errors such as missing brackets or extra text. It does not check what the values mean.
-
-**Closest distractor (D):** Invented values are a semantic problem, fixed by nullable fields, not by the move to tool_use.
-
-### Q3 · A
-
-**Why A is correct:** The call summary blocks a live customer, so it must stay synchronous. The nightly job has an eight-hour window, but a batch can take up to 24 hours. Only the five-day fraud scan fits the batch window.
-
-**Closest distractor (B):** Fast test batches are not a guarantee, and the nightly window is shorter than the 24-hour processing limit.
-
-### Q4 · D
-
-**Why D is correct:** The existing examples work for simple tickets. The failures come from a case the examples do not show. One or two targeted examples for multi-problem tickets cover the gap.
-
-**Closest distractor (A):** Adding more written rules is the anti-pattern when examples are the tool that fixes format consistency.
-
-### Q5 · C
-
-**Why C is correct:** A math mismatch is a fixable error, so a retry with the specific error can help. The provider ID is in a document that was not provided. No retry can create it, so null and human follow-up is right.
-
-**Closest distractor (B):** Sending total mismatches to humans wastes effort, because a retry with error feedback often fixes them.
-
-### Q6 · A
-
-**Why A is correct:** An independent reviewer works best without the generator's reasoning. It then judges the script against the requirements with fresh eyes. The transcript would pull it toward the same decisions.
-
-**Closest distractor (B):** Sharing the full transcript recreates the self-review problem the second instance is meant to avoid.
-
-### Q7 · D
-
-**Why D is correct:** An "unclear" enum value captures truly ambiguous wording. A nullable value captures absence without inventing an answer. This keeps "no renewal" separate from both other cases.
-
-**Closest distractor (C):** Making the field optional fixes the absent case but still forces ambiguous contracts into true or false.
-
-### Q8 · B
-
-**Why B is correct:** Naming the violations and the allowed case gives Claude explicit criteria. This directly removes flags on allowed sales language. Vague words like "suspicious" leave the decision open.
-
-**Closest distractor (C):** Confidence thresholds are an anti-pattern for false positives when the criteria themselves are unclear.
-
-### Q9 · A
-
-**Why A is correct:** The examples only show table layouts, so Claude misses paragraph-style deadlines. Adding examples from varied layouts teaches it where else to look. The data exists, so this targets the real gap.
-
-**Closest distractor (B):** A required field pushes Claude to invent a deadline when one is truly absent, which adds a new error.
-
-### Q10 · D
-
-**Why D is correct:** A retry needs the original document, the failed output, and the specific error. Without the source, Claude can only guess a number. With the bill of lading, it can find the real weight and convert it.
-
-**Closest distractor (C):** More retries without the source document only give more chances to guess.
-
-### Q11 · C
-
-**Why C is correct:** Batch results can come back in any order. A custom_id on each request is the field used to match results to inputs.
-
-**Closest distractor (A):** Result order is not guaranteed to match submission order.
-
-### Q12 · B
-
-**Why B is correct:** Per-file passes fix the uneven attention across 25 files. The missed signature problem is a cross-file issue, so it needs its own integration pass. Both parts are needed.
-
-**Closest distractor (C):** Per-file passes alone fix the thin comments but still miss issues that cross file boundaries.
-
-### Q13 · A
-
-**Why A is correct:** "auto" lets Claude decide whether to call a tool or reply in text. That matches a mix of order questions and general questions.
-
-**Closest distractor (B):** "any" forces Claude to call some tool, so it could not answer policy questions in plain text.
-
-### Q14 · C
-
-**Why C is correct:** The root cause is a vague criterion, "significant risk." Clear clause types and an accepted-terms list fix that first. Confidence routing is useful only after clear criteria exist.
-
-**Closest distractor (A):** A calibrated cutoff on top of vague criteria filters noise without fixing what Claude is told to flag.
-
-### Q15 · D
-
-**Why D is correct:** Few-shot examples that show reasoning for unclear cases make judgments consistent. The written rules already exist and did not solve the problem.
-
-**Closest distractor (B):** Adding more detailed instructions is the anti-pattern when instructions have already failed.
-
-### Q16 · B
-
-**Why B is correct:** A value in the wrong field is a structure error, and the right value exists in the document. A retry with the specific error can fix it.
-
-**Closest distractor (D):** The date is printed, but it cannot be read, so a retry cannot recover it.
-
-### Q17 · D
-
-**Why D is correct:** Batch results stay available for 29 days. Auditors ask after six to eight weeks, so the team must download and store results itself.
-
-**Closest distractor (C):** A 20,000-request job is well within the batch limit of 100,000 requests.
-
-### Q18 · C
-
-**Why C is correct:** A fork copies the generation history, so the reviewer shares the same reasoning. A fresh instance with the notes and the source list checks claims independently.
-
-**Closest distractor (B):** Telling a forked reviewer to be critical does not remove the shared reasoning context.
-
-### Q19 · B
-
-**Why B is correct:** Strict schemas stop syntax errors but not cross-field errors like date order or wrong sums. A max_tokens stop means the output may be cut off. Code validation is still needed for both.
-
-**Closest distractor (A):** Strict mode matches the schema, but it cannot check meaning, and cut-off outputs are an exception.
-
-### Q20 · A
-
-**Why A is correct:** The descriptions are already improved, so the next step is examples. Examples with reasoning show how to handle unclear requests. Claude can then apply that judgment to new messages.
-
-**Closest distractor (B):** Better descriptions come first, but the team already did that, so more rewriting adds little.
-
-### Q21 · D
-
-**Why D is correct:** The criterion names the exact condition that makes a query risky. Queries with bound parameters do not match it, so they are skipped. This removes the false positives without hiding real injection risks.
-
-**Closest distractor (C):** A second pass adds cost but still uses the same vague rule, so the false alarms remain.
-
-### Q22 · A
-
-**Why A is correct:** The source contradicts itself, so no retry can find one right answer. Extracting both values with a conflict flag keeps the facts. A human can then decide.
-
-**Closest distractor (C):** Picking a page is a business decision the legal team has not made, so the extractor should not invent one.
-
-### Q23 · B
-
-**Why B is correct:** A batch request cannot run a client-side tool loop, because each round trip needs a new request. The stock data is known in advance, so code can include it in each request. The job then fits one batch.
-
-**Closest distractor (D):** Chaining batches works in theory, but each round can take up to 24 hours and risks the three-day deadline.
-
-### Q24 · C
-
-**Why C is correct:** An "other" value with a detail string keeps the category list stable. It still records new expense types clearly.
-
-**Closest distractor (A):** Free text loses the consistency that an enum gives to downstream systems.
-
-### Q25 · D
-
-**Why D is correct:** The scripts change production financial data, so review quality matters more than cost. Last quarter's errors also show short scripts are not safe to skip.
-
-**Closest distractor (B):** A size cut-off looks like a fair trade-off, but the data shows short scripts carried most of the caught errors.
-
-### Q26 · C
-
-**Why C is correct:** Input-output examples without reasoning lead Claude to copy surface features. A few examples with reasons, including a contrasting pair, teach the real rule. This also keeps the prompt short.
-
-**Closest distractor (B):** A single rule fixes burst pipes but not the habit of matching surface words in other cases.
-
-### Q27 · A
-
-**Why A is correct:** "Important" is vague, so Claude decides it differently each time. Naming the issue types gives explicit criteria and consistent highlights.
-
-**Closest distractor (C):** A cap on the number of highlights does not tell Claude which issues to pick.
-
-### Q28 · B
-
-**Why B is correct:** Swapped addresses are a semantic error, which a schema cannot catch. A code check against a known rule detects it. A retry with that specific failure helps Claude correct it.
-
-**Closest distractor (A):** Schema patterns check format, and both addresses already have a valid format.
-
-### Q29 · D
-
-**Why D is correct:** A format rule in the prompt, next to a schema constraint, gives the same value every time. This is the standard way to handle inconsistent source formats.
-
-**Closest distractor (A):** A nightly script runs too late, because the reports read each record right after extraction.
-
-### Q30 · A
-
-**Why A is correct:** The Batches API has no latency guarantee and allows up to 24 hours. The downstream job should wait for the batch to end, not a fixed time.
-
-**Closest distractor (C):** Smaller batches may finish faster, but they still have no time guarantee.
-
-### Q31 · B
-
-**Why B is correct:** Two to four targeted examples that show the exact fields give a consistent format. A tricky case shows how to handle edge cases.
-
-**Closest distractor (A):** One simple example does not show how to handle harder findings.
-
-### Q32 · C
-
-**Why C is correct:** The scores are calibrated, so they can drive routing. High-confidence findings go to developers. Low-confidence findings go to a human reviewer, not into the trash.
-
-**Closest distractor (B):** Posting everything puts low-confidence noise in front of developers and hurts trust.
-
-### Q33 · D
-
-**Why D is correct:** Both symptoms come from one vague criterion, "sufficient detail." Naming the gaps to report and the cases to skip fixes both. It cuts the false flags and catches the misses.
-
-**Closest distractor (B):** Examples of good notes help a little, but they do not define which gaps must be reported.
-
-### Q34 · C
-
-**Why C is correct:** A detected_pattern field lets the team group dismissals by pattern. That shows which code constructs cause false positives. The team can then improve the prompt for those patterns.
-
-**Closest distractor (A):** The field supports analysis by the team, not skipping repeat findings inside one review.
-
-### Q35 · A
-
-**Why A is correct:** Forcing the tool guarantees structured output. A document_type value for non-invoices records the case in data, not text. Nullable fields stop Claude from inventing invoice values.
-
-**Closest distractor (D):** "N/A" strings in every field are placeholder values that downstream code can mistake for real data.
-
-### Q36 · B
-
-**Why B is correct:** The written instruction already exists and did not work. Examples that show extraction from inline text teach Claude to handle that structure.
-
-**Closest distractor (A):** A longer instruction repeats the approach that already failed.
-
-### Q37 · D
-
-**Why D is correct:** The Batches API charges 50% of standard prices. Speed is not guaranteed, and the main benefit is lower cost for non-urgent work.
-
-**Closest distractor (A):** Most batches finish within an hour, but processing can take up to 24 hours.
-
-### Q38 · A
-
-**Why A is correct:** Per-file passes cannot see how files connect, so they contradict each other on shared paths. A cross-file integration pass resolves this. The model size is a red herring.
-
-**Closest distractor (C):** Running each pass twice improves repeatability, but neither pass can see the other file.
-
-### Q39 · C
-
-**Why C is correct:** Explicit criteria should list local patterns to skip. Naming the accepted Result pattern removes the false positives and keeps other convention checks.
-
-**Closest distractor (D):** Removing all convention findings is too broad and drops useful checks.
-
-### Q40 · D
-
-**Why D is correct:** tool_use fixes syntax errors. A retry with the error fixes misplaced values. Data that is not in the document needs null and human review, not more attempts.
-
-**Closest distractor (C):** No prompt or retry can create a PO number that the document does not contain.
-
-### Q41 · B
-
-**Why B is correct:** The structured data lives in the input field of the tool_use content block. Any text block is optional and is not the extraction result.
-
-**Closest distractor (D):** Your own code sends tool_result blocks; the API does not add them to Claude's response.
-
-### Q42 · C
-
-**Why C is correct:** Few-shot examples reduce hallucination for informal measurements and absent values. They show exactly how to map vague amounts and missing weights. The written rule already failed.
-
-**Closest distractor (B):** Stronger wording is still just more instruction, which already did not work.
-
-### Q43 · A
-
-**Why A is correct:** One batch can hold up to 100,000 requests or 256 MB. Splitting into several batches keeps the batch discount. A custom_id per document keeps results easy to match.
-
-**Closest distractor (D):** Bundling documents reduces the count, but it makes results harder to match and to resend when one fails.
-
-### Q44 · D
-
-**Why D is correct:** A model that keeps its generation reasoning is less likely to question its own decisions. That is why an independent instance catches more issues.
-
-**Closest distractor (A):** Context limits can matter in long sessions, but they are not the main reason self-review fails.
-
-### Q45 · B
-
-**Why B is correct:** The instruction names what to report and what to skip. This removes trivial findings and keeps the useful ones.
-
-**Closest distractor (C):** A confidence cutoff does not define which missing tests are worth reporting.
-
-### Q46 · A
-
-**Why A is correct:** Retries help with fixable errors, but they have limits. If the same check keeps failing, the document needs human review. The errors give the reviewer a clear starting point.
-
-**Closest distractor (B):** Unlimited retries waste cost when the cause may be something a retry cannot fix.
-
-### Q47 · C
-
-**Why C is correct:** An "unclear" enum value lets Claude mark truly ambiguous cases. Analysts can then find them instead of seeing forced labels.
-
-**Closest distractor (D):** "other" plus detail is for new categories, not for tone that fits several existing labels.
-
-### Q48 · D
+**Answer: D**
 
 **Why D is correct:** The written explanation already exists and did not change the output. Examples showing a branch-level gap teach Claude the pattern to report.
 
 **Closest distractor (A):** A longer explanation repeats the approach that has already failed.
+
+</details>
