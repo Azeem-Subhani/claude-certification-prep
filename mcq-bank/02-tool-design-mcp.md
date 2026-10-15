@@ -1,6 +1,6 @@
 # Domain 2 MCQ Bank: Tool Design & MCP Integration
 
-> 43 questions: 11 Easy, 17 Medium, 15 Hard. [Study notes](../domains/02-tool-design-mcp.md) · [Bank index](README.md)
+> 43 questions: 11 Easy, 17 Medium, 15 Hard. [Study notes](../domain-2-tool-design-mcp-integration/README.md) · [Anti-patterns](../domain-2-tool-design-mcp-integration/anti-patterns.md) · [Bank index](README.md)
 
 ## Questions
 

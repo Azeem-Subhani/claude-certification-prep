@@ -23,10 +23,10 @@
 
 ## How to use
 
-1. Study the domain file in [../domains/](../domains/) first.
+1. Study the domain folder first (`domain-1-...` to `domain-5-...`). Start with its `README.md`.
 2. Answer every question in the domain file **before** you look at the answer key at the bottom.
 3. Score yourself. For each miss, read the explanation **and** the "closest distractor" line. The distractor line shows the trap you fell into.
-4. Go back to the "Common traps" section of the study file for the topics you missed.
+4. Read the domain's `anti-patterns.md`, then reread the topic file for each question you missed.
 5. On a second pass, time yourself. The real exam gives 120 minutes for 60 items, about 2 minutes per item.
 
 **Format of each question:**

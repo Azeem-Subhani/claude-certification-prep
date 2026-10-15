@@ -1,6 +1,6 @@
 # Domain 1 MCQ Bank: Agentic Architecture & Orchestration
 
-> 65 questions: 16 Easy, 26 Medium, 23 Hard. [Study notes](../domains/01-agentic-architecture.md) · [Bank index](README.md)
+> 65 questions: 16 Easy, 26 Medium, 23 Hard. [Study notes](../domain-1-agentic-architecture-orchestration/README.md) · [Anti-patterns](../domain-1-agentic-architecture-orchestration/anti-patterns.md) · [Bank index](README.md)
 
 ## Questions
 

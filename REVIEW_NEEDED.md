@@ -13,7 +13,7 @@
 **Sources:**
 - **Guide:** official exam guide PDF v1.0 (July 2026).
 - **Cheat sheet:** [claude-architect-cheat-sheet.md](claude-architect-cheat-sheet.md).
-- **Docs:** official Anthropic docs and the MCP spec, as logged in [docs/verification-log.md](docs/verification-log.md).
+- **Docs:** official Anthropic docs and the MCP spec, as logged in the "Sources checked" table of each domain folder's `README.md` (row IDs like A5b or C3).
 
 **How the study set handles conflicts now:**
 - The notes teach the **exam guide's answer** and add a ⚠️ product note.
@@ -47,10 +47,10 @@ The verification fetches used a summarizing tool. These items matter enough to o
 | ID | Type | Claim | Where used | Page |
 |---|---|---|---|---|
 | V1 | VERIFY | Structured outputs use `output_config.format`, and `output_format` is deprecated. | Domain 4; cheat sheet 4.3 note | platform.claude.com/docs/en/build-with-claude/structured-outputs |
-| V2 | VERIFY | Tool Runner is beta (`client.beta.messages.tool_runner`). | Verification log A10 only (not taught) | platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner |
-| V3 | VERIFY | PostToolUse `updatedToolOutput` replaces the result for any tool (`updatedMCPToolOutput` is older). | Verification log C5c | code.claude.com/docs/en/agent-sdk/hooks |
+| V2 | VERIFY | Tool Runner is beta (`client.beta.messages.tool_runner`). | Domain 1 Sources checked, row A10 (not taught) | platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner |
+| V3 | VERIFY | PostToolUse `updatedToolOutput` replaces the result for any tool (`updatedMCPToolOutput` is older). | Domain 1 Sources checked, row C5c | code.claude.com/docs/en/agent-sdk/hooks |
 | V4 | VERIFY | Skills use `$ARGUMENTS` in the body to insert user input. | Domain 3 skill example | code.claude.com/docs/en/skills |
-| V5 | VERIFY | Model names (Opus 5.5, Sonnet 5.5, Fable 5.1, Mythos 5.1) in ⚠️ notes. These will go out of date. | Domains 2 and 4, verification log | platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools |
+| V5 | VERIFY | Model names (Opus 5.5, Sonnet 5.5, Fable 5.1, Mythos 5.1) in ⚠️ notes. These will go out of date. | Domains 2 and 4 (topic files and Sources checked) | platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools |
 | V6 | VERIFY | Cheat sheet 4.5 first line: the words were scrambled in the PDF and were put back in order. Check it against your original. | Cheat sheet 4.5 | your source of the cheat sheet |
 
 ## C. Decisions only you can make

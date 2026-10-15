@@ -1,6 +1,6 @@
 # Domain 3 MCQ Bank: Claude Code Configuration & Workflows
 
-> 48 questions (12 Easy, 19 Medium, 17 Hard) covering task statements 3.1-3.6 · [Study notes](../domains/03-claude-code-configuration.md) · [Bank index](README.md)
+> 48 questions (12 Easy, 19 Medium, 17 Hard) covering task statements 3.1-3.6 · [Study notes](../domain-3-claude-code-configuration-workflows/README.md) · [Anti-patterns](../domain-3-claude-code-configuration-workflows/anti-patterns.md) · [Bank index](README.md)
 
 ## Questions
 
