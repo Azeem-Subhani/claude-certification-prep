@@ -14,7 +14,7 @@
 | Cost of a wrong direction | Low: only a plan is thrown away | High: changes must be undone (**rework**) |
 | Speed for simple tasks | Slower (extra step) | Faster |
 
-In Claude Code you can switch into plan mode during a session (for example with **Shift+Tab** to cycle permission modes) or start in it with `--permission-mode plan`.
+In Claude Code you can switch into plan mode during a session (for example with **Shift+Tab** to cycle permission modes) or start in it with `--permission-mode plan`. You can also type `/plan` in the prompt.
 
 ---
 

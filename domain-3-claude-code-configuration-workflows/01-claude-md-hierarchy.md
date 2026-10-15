@@ -140,7 +140,34 @@ When Claude behaves **inconsistently** (follows a rule in one session, ignores i
 
 ---
 
-## 7. Real-world case study
+## 7. When a rule must always hold: settings, permissions, and hooks
+
+CLAUDE.md is **guidance**: Claude reads it and usually follows it, but nothing forces it. If two CLAUDE.md files disagree, no level is sure to win. **Settings files** (`settings.json`) are different: Claude Code itself enforces them.
+
+In short: CLAUDE.md asks. Settings enforce.
+
+| Settings file | Who gets it |
+|---|---|
+| `~/.claude/settings.json` | You, in every project |
+| `.claude/settings.json` | Everyone (committed to git) |
+| `.claude/settings.local.json` | You, in this project (gitignored) |
+
+**Permission rules** allow or block tools:
+
+```json
+{
+  "permissions": {
+    "allow": ["Bash(npm run test *)"],
+    "deny": ["Read(./.env)", "Read(./.env.*)"]
+  }
+}
+```
+
+**Hooks** in settings run your command at fixed events. For example, a `PreToolUse` hook can check a command and block it. The docs say to use **permission rules** for a hard allow or deny (Sources checked table in the [README](README.md), rows C17 to C19).
+
+---
+
+## 8. Real-world case study
 
 **Situation:** A 30-person team had one 900-line CLAUDE.md. Problems:
 1. New hires didn't get the "never log card numbers" rule. It turned out to be in the tech lead's `~/.claude/CLAUDE.md`.
