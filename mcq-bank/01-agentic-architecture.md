@@ -15,6 +15,17 @@ What should the loop do next?
 - C. Call Claude again with the same message list so it can confirm its tool choice first.
 - D. Run get_route and show its raw output directly to the user as the final answer.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** "tool_use" means Claude wants a tool and is not finished. The loop runs the tool, adds a tool_result block in a new user message, and calls Claude again.
+
+**Closest distractor (D):** The raw tool output is input for Claude, not a final answer, so the loop must send it back to Claude.
+
+</details>
+
 ### Q2 · Task 1.4 · Medium
 
 Harbor Mutual's claims agent must run check_fraud_flags before issue_payout. The system prompt already states this order in clear words. An audit shows the agent skipped the fraud check on 5% of approved payouts last month.
@@ -25,6 +36,17 @@ What is the BEST fix?
 - B. Add six few-shot examples that show the fraud check before every single payout.
 - C. Add a routing classifier that sends payout requests to a separate payout agent.
 - D. Make issue_payout return an error until a passed fraud check is recorded.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** A payout without a fraud check is a money and compliance risk. A prerequisite gate in code blocks the payout every time. The prompt already states the order, so prompt changes have reached their limit.
+
+**Closest distractor (B):** Few-shot examples can lower the failure rate, but they never guarantee the order.
+
+</details>
 
 ### Q3 · Task 1.2 · Hard
 
@@ -37,6 +59,17 @@ What should the architect do?
 - C. Let the subagents share a list of visited URLs so each one skips pages others fetched.
 - D. Replace the three subagents with one search subagent that has a larger budget.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** The subagents overlap because they all got the same scope. Giving each one a different subtopic or source type removes the duplicate work at its source.
+
+**Closest distractor (B):** A dedupe step cleans the output, but the duplicate searches and their costs still happen.
+
+</details>
+
 ### Q4 · Task 1.5 · Easy
 
 A shipping agent calls two carrier tools. One returns package weight in kilograms. The other returns weight in pounds. Claude sometimes compares the numbers as if they used the same unit.
@@ -47,6 +80,17 @@ Which mechanism BEST fixes this?
 - B. A system prompt rule that tells Claude to always convert pounds into kilograms.
 - C. A PostToolUse hook that converts every weight to kilograms before Claude reads it.
 - D. Few-shot examples that show Claude converting the weights before it compares them.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** A PostToolUse hook changes tool results before Claude reads them. Converting every weight to one unit there makes the data consistent every time.
+
+**Closest distractor (B):** A prompt rule asks Claude to convert, but model-side conversion is not reliable for data formats.
+
+</details>
 
 ### Q5 · Task 1.1 · Medium
 
@@ -59,6 +103,17 @@ What is the BEST fix?
 - C. Tell Claude in the system prompt not to write any text before a tool call.
 - D. End the loop only when the response text contains a phrase like "task complete".
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** A response can hold text and a tool_use block together. Checking the first block's type ends the loop too early. stop_reason is the reliable signal.
+
+**Closest distractor (C):** It tries to change Claude's behavior to fit a broken check, instead of fixing the check itself.
+
+</details>
+
 ### Q6 · Task 1.3 · Medium
 
 A contract review system uses search subagents to find risky clauses in 40 supplier contracts. They send the coordinator short prose summaries. A synthesis subagent then writes the final memo. Lawyers say they cannot trace any finding back to a contract and clause.
@@ -69,6 +124,17 @@ What is the BEST fix?
 - B. Return findings as records with contract name, clause number, and quote fields.
 - C. Give the synthesis subagent a document tool so it can find each clause again.
 - D. Raise max_tokens for the search subagents so their prose summaries are more detailed.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** The source details were lost when subagents sent prose summaries. Structured records keep content and metadata apart, so the memo can cite each clause.
+
+**Closest distractor (A):** The synthesis subagent cannot cite details it never received, so a prompt rule does not help.
+
+</details>
 
 ### Q7 · Task 1.6 · Easy
 
@@ -81,6 +147,17 @@ Which decomposition pattern fits BEST?
 - C. A coordinator that decides at run time which of the steps each invoice needs.
 - D. A fixed sequential pipeline, where each step's output feeds the next prompt.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** The steps are known and never change. A fixed sequential pipeline, also called prompt chaining, fits known steps best.
+
+**Closest distractor (A):** Adaptive decomposition is for unknown scope, and here it only adds cost and variation.
+
+</details>
+
 ### Q8 · Task 1.7 · Medium
 
 Yesterday a developer used a Claude Code session named "auth-audit" to map the login code. Nobody has changed any files since then. Today the developer wants to continue the same analysis with all the earlier context.
@@ -91,6 +168,17 @@ What should the developer do?
 - B. Fork the "auth-audit" session so the original history stays protected.
 - C. Run claude --resume auth-audit and continue the analysis.
 - D. Start a fresh session and paste in a written summary of yesterday's work.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** No files changed, so the earlier context is still valid. Resuming the named session continues the same work with its full history.
+
+**Closest distractor (D):** A fresh session with a summary is for stale or messy history, and here it throws away valid context.
+
+</details>
 
 ### Q9 · Task 1.1 · Hard
 
@@ -103,6 +191,17 @@ What is the BEST fix?
 - C. Turn off parallel tool use so Claude asks for only one tool in each response.
 - D. Remove the two unanswered tool_use blocks from the history before the next call.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Every tool_use block needs a matching tool_result in the next user message. The 400 error comes from two unanswered tool_use blocks, not from rate limits.
+
+**Closest distractor (C):** Turning off parallel tool use hides the bug, but it also makes every run slower.
+
+</details>
+
 ### Q10 · Task 1.4 · Easy
 
 A support agent for an online furniture store escalates damaged-delivery cases to human staff. The staff use a queue tool that cannot show the chat transcript.
@@ -113,6 +212,17 @@ What should the escalation message contain?
 - B. A short note that says "Customer needs help with a damaged item, see chat for details."
 - C. The customer's last message, copied exactly, so staff see the request in their words.
 - D. A link to the chat log and a priority level that the agent picks from one to five.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** The staff cannot see the chat, so the handoff must stand alone. It needs the customer ID, summary, root cause, amount, and a recommended action.
+
+**Closest distractor (D):** The staff cannot open the transcript, so a link does not give them the facts.
+
+</details>
 
 ### Q11 · Task 1.2 · Medium
 
@@ -125,6 +235,17 @@ Where is the root cause MOST likely?
 - C. The model's context window was too small to hold all of the search results at once.
 - D. The coordinator split the topic into subtasks that covered only one area.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** The subagents did their tasks well, and synthesis used all results. Whole areas are missing, so the scope was too narrow when the coordinator split the topic.
+
+**Closest distractor (A):** Narrow queries would reduce depth inside a topic, but here whole topics were never assigned.
+
+</details>
+
 ### Q12 · Task 1.1 · Easy
 
 A billing agent's lookup_invoice tool raises an exception when the database times out. Right now, the exception crashes the loop and the user gets no answer.
@@ -135,6 +256,17 @@ How should the loop handle a tool that fails while running?
 - B. Leave out the tool_result for that call and ask Claude to try something else.
 - C. Catch the exception and return a tool_result with is_error true and a clear message.
 - D. Retry the Messages API request with backoff, because the error came from the API.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** A tool failure should go back to Claude as a tool_result with is_error true. Claude can then retry, try another path, or explain the problem.
+
+**Closest distractor (D):** Backoff is for errors from the Claude API itself, but this failure came from the tool.
+
+</details>
 
 ### Q13 · Task 1.3 · Easy
 
@@ -147,6 +279,17 @@ What is the BEST fix?
 - C. Keep the subagent running between calls so it holds on to the earlier findings.
 - D. Tell the subagent in its system prompt to remember the results of earlier calls.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** Each subagent call starts with an empty context. The coordinator must pass the competitor list in the second prompt.
+
+**Closest distractor (D):** A prompt cannot give the subagent a memory it does not have.
+
+</details>
+
 ### Q14 · Task 1.5 · Medium
 
 Brightcart's sales agent can call apply_discount. Policy says discounts above 20% need manager approval. The team wants these calls sent to an approval queue instead of running.
@@ -157,6 +300,17 @@ Which design BEST meets this policy?
 - B. A PreToolUse hook that sends calls above 20% to the approval queue.
 - C. A system prompt rule that tells Claude to ask a manager about large discounts.
 - D. A line in the apply_discount description that says large discounts need approval.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** A PreToolUse hook runs before the tool. It can stop large discounts and send them to the approval queue every time.
+
+**Closest distractor (A):** PostToolUse runs after the discount is applied, so it can only try to undo it.
+
+</details>
 
 ### Q15 · Task 1.6 · Hard
 
@@ -169,6 +323,17 @@ Which approach is BEST?
 - C. Load the full codebase into one long session with a large context window.
 - D. Map the system first, rank risk areas, and change the plan as findings appear.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** The scope is unknown, and the documents are stale. Adaptive decomposition maps the system first, ranks the risks, and changes the plan as it learns.
+
+**Closest distractor (B):** Parallel subagents look efficient, but the old service list is probably incomplete.
+
+</details>
+
 ### Q16 · Task 1.7 · Hard
 
 Last week a developer ran a long Claude Code analysis of a payments service. Since then, the team upgraded the main framework and refactored about 40 files. The developer wants to continue the analysis. The developer does not want to lose last week's useful findings.
@@ -179,6 +344,17 @@ What is the BEST way to continue?
 - B. Fork the old session so the new work starts on a separate, clean branch.
 - C. Start a fresh session with a structured summary of findings and changed areas.
 - D. Resume the old session and tell Claude to ignore all results older than today.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** After a framework upgrade and 40 changed files, old tool results are stale. A fresh session with a structured summary keeps the findings without the stale history.
+
+**Closest distractor (D):** The stale results stay in the history, and a prompt cannot reliably make Claude ignore them.
+
+</details>
 
 ### Q17 · Task 1.1 · Medium
 
@@ -191,6 +367,17 @@ What is the BEST fix?
 - C. Add a system prompt rule that tells Claude exactly when to stop searching.
 - D. End the loop when Claude's tool input contains the word "final".
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** With "any", Claude must call a tool every turn, so it can never end with "end_turn". "auto" lets Claude choose to answer when it is done.
+
+**Closest distractor (C):** A prompt rule cannot win against a setting that forces a tool call every turn.
+
+</details>
+
 ### Q18 · Task 1.4 · Hard
 
 A telecom customer writes: "My bill is wrong, my router keeps dropping, and I want to add a line." The agent answers only the billing issue. A teammate proposes three separate conversations, one per issue, to keep each context clean. Customers already complain about repeating their details.
@@ -201,6 +388,17 @@ What is the BEST design?
 - B. Open three separate conversations, one per issue, and copy the customer ID into each.
 - C. Route the message to the queue for the most urgent issue, and handle the rest later.
 - D. Add a prompt rule that tells the agent to answer the issues in the order they appear.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** The agent should split the message into separate issues and check them in parallel. It should share the customer context and send one combined reply.
+
+**Closest distractor (B):** Separate conversations lose the shared context and make customers repeat themselves.
+
+</details>
 
 ### Q19 · Task 1.2 · Easy
 
@@ -213,6 +411,17 @@ What is the MAIN benefit of the architect's design?
 - C. One place controls routing, logging, and error handling for the whole system.
 - D. The coordinator can skip delegation and answer most of the questions by itself.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** Hub-and-spoke gives one place for routing, logging, and error handling. This makes the system easier to observe and control.
+
+**Closest distractor (B):** Subagents do not remember earlier calls in any design, so this is not a benefit of the hub.
+
+</details>
+
 ### Q20 · Task 1.3 · Hard
 
 A coordinator must analyze four regional markets. The four analyses do not depend on each other. Today it issues one Task call per turn, so a run takes about four times as long as one analysis. Users wait for the result in the app. One engineer suggests the Message Batches API, and another suggests a smaller model.
@@ -223,6 +432,17 @@ What should the architect do FIRST?
 - B. Merge the four regions into one subagent call that uses a longer prompt.
 - C. Switch the subagents to a smaller model so each analysis returns sooner.
 - D. Have the coordinator issue all four Task calls in a single response.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** Independent subagent tasks should start as several Task calls in one coordinator response. They then run in parallel, which fixes the delay at its cause.
+
+**Closest distractor (C):** A smaller model shortens each call, but the four calls still run one after another.
+
+</details>
 
 ### Q21 · Task 1.5 · Hard
 
@@ -235,6 +455,17 @@ What is the BEST fix?
 - C. A system prompt rule, stated twice, that says every query must include tenant_id.
 - D. A tool schema change that marks the tenant_id field as a required input.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** A PreToolUse hook can change the tool input before the query runs. Setting tenant_id from the session makes every query safe, whatever Claude sends.
+
+**Closest distractor (B):** The query has already read other tenants' data, so filtering afterward is too late for a security rule.
+
+</details>
+
 ### Q22 · Task 1.6 · Medium
 
 A legal team asks an agent to review 30 vendor contracts in one prompt. The first contracts get detailed notes. The last ten get one line each. A liability clause is flagged in one contract but approved in another with the same wording.
@@ -245,6 +476,17 @@ What is the BEST fix?
 - B. Review each contract in its own pass, then run one cross-contract comparison pass.
 - C. Split the contracts into three batches of ten and review each batch on its own.
 - D. Add a prompt line that tells Claude to give every contract the same attention.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Uneven notes and inconsistent verdicts are signs of attention dilution. One pass per contract plus a cross-contract pass fixes both.
+
+**Closest distractor (C):** Batches reduce the load, but no pass compares contracts across batches.
+
+</details>
 
 ### Q23 · Task 1.1 · Medium
 
@@ -257,6 +499,17 @@ What should the developer change?
 - C. Put all tool_result blocks first in the user message, before any text.
 - D. Remove the tool_use_id fields, because Claude can match the results by their order.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** In the user message, tool_result blocks must come before any text. Moving the results first makes the request valid.
+
+**Closest distractor (B):** Tool results belong in a user message, so an assistant message is the wrong role.
+
+</details>
+
 ### Q24 · Task 1.7 · Easy
 
 A developer finished a shared analysis of a slow database layer in Claude Code. Now the developer wants to try two migration plans from that same point. The two attempts must stay separate.
@@ -267,6 +520,17 @@ Which option fits BEST?
 - B. Start two fresh sessions that have no context from the earlier analysis.
 - C. Use --continue twice so that each run picks up the most recent session.
 - D. Use fork_session to create two branches from the shared analysis.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** fork_session creates separate branches from the same point. Each plan can then grow from the shared analysis without affecting the other.
+
+**Closest distractor (A):** Trying both plans in one history mixes them, so the second attempt is shaped by the first.
+
+</details>
 
 ### Q25 · Task 1.4 · Easy
 
@@ -279,6 +543,17 @@ Why can stronger wording not reach zero?
 - C. Identity checks need few-shot examples, and this prompt does not have any.
 - D. The rule must go in the tool description, because Claude ignores the system prompt.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Prompt guidance is probabilistic. It makes the right order likely but never guaranteed, so a security rule needs code.
+
+**Closest distractor (C):** Few-shot examples also only make the behavior more likely.
+
+</details>
+
 ### Q26 · Task 1.2 · Medium
 
 A coordinator must research "the impact of automation on logistics." It will use four search subagents. The team wants broad coverage and little overlap.
@@ -289,6 +564,17 @@ Which task split is BEST?
 - B. Four subagents that each research the full topic, so the results can be cross-checked.
 - C. Warehouse robots, warehouse robot vendors, warehouse robot costs, and robot safety.
 - D. One subagent for each search engine, with each one searching the full topic.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** These four areas are distinct and together cover the topic. This split gives broad coverage with little overlap.
+
+**Closest distractor (C):** Each subtask is distinct, but all four stay inside warehouse robots, so the split is too narrow.
+
+</details>
 
 ### Q27 · Task 1.3 · Medium
 
@@ -301,6 +587,17 @@ What is the BEST fix?
 - C. Give each subagent a description that says what it does and when to use it.
 - D. Add keyword rules to the coordinator prompt, such as "contract" means the legal agent.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** The coordinator picks a subagent based on its description. Clear descriptions that say when to use each one fix the wrong routing.
+
+**Closest distractor (D):** Keyword rules are brittle and fail on questions that use other words.
+
+</details>
+
 ### Q28 · Task 1.5 · Easy
 
 An IT helpdesk agent can call delete_user_account. Policy says this call must never run without an approved change ticket. The team wants code to stop the call before anything is deleted.
@@ -311,6 +608,17 @@ Which hook should they use?
 - B. A Stop hook that checks for a ticket when the agent finishes its whole task.
 - C. A PostToolUse hook that removes the deletion result from Claude's view.
 - D. A PreToolUse hook that blocks the call when no approved ticket exists.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** PreToolUse runs before the tool. It can block the deletion when no approved ticket exists.
+
+**Closest distractor (A):** PostToolUse runs after the account is already gone.
+
+</details>
 
 ### Q29 · Task 1.1 · Medium
 
@@ -323,6 +631,17 @@ What is the MOST likely cause?
 - C. The get_order description does not tell Claude that its results are final.
 - D. The loop has no cache, so each repeated call has to reach the database again.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Claude never sees the tool output, so it asks for the same data again. Every result must go into the history as a tool_result.
+
+**Closest distractor (D):** A cache makes repeated calls cheaper, but Claude still never sees the results.
+
+</details>
+
 ### Q30 · Task 1.6 · Medium
 
 A logistics platform has an intermittent failure in its route planner. Nobody knows which service causes it. The ops team has a runbook with fixed steps for known outages. They want an agent to investigate.
@@ -333,6 +652,17 @@ Which approach fits BEST?
 - B. Send all logs from the past week to one prompt and ask Claude for the cause.
 - C. Start one subagent per service, each with the same fixed checklist of steps.
 - D. Use adaptive decomposition that updates the plan as evidence appears.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** The cause is unknown, so the agent cannot know the steps in advance. Adaptive decomposition changes the plan as evidence appears.
+
+**Closest distractor (A):** The runbook fits known outages, but this failure is not a known pattern.
+
+</details>
 
 ### Q31 · Task 1.4 · Hard
 
@@ -345,6 +675,17 @@ What is the BEST change?
 - C. Send a structured summary: claim ID, issue, root cause, amount, and next step.
 - D. Let adjusters ask the agent follow-up questions in a chat before they act.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** Adjusters cannot see transcripts and have little time. A structured summary gives them what they need to act at once.
+
+**Closest distractor (A):** A full transcript has the facts, but adjusters must dig through it, which is slow at 60 cases an hour.
+
+</details>
+
 ### Q32 · Task 1.3 · Hard
 
 A claims-review subagent gets a 14-step procedure from the coordinator: open the PDF, go to page 2, read box 7, and so on. It works for standard forms. It fails on scanned letters, emails, and forms from other states. The team plans to add steps for each new document type.
@@ -355,6 +696,17 @@ What is the BEST change?
 - B. Add a separate step-by-step procedure for each new document type to the prompt.
 - C. Switch the subagent to a larger model so it can follow longer procedures well.
 - D. Reject documents that do not match the standard form and send them to staff.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** Goals and quality criteria let the subagent adapt to new document types. Fixed procedures break when the input does not match the script.
+
+**Closest distractor (B):** More procedures only cover known types, and the next new type fails again.
+
+</details>
 
 ### Q33 · Task 1.1 · Easy
 
@@ -367,6 +719,17 @@ What should the loop do?
 - C. Ask Claude to choose between the text and the tool call before it continues.
 - D. Show the text, wait for the user to reply, and then run track_parcel afterward.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** A response can contain text and a tool call together. The stop_reason is "tool_use", so the loop runs the tool and continues.
+
+**Closest distractor (A):** Text in a response does not mean the task is done.
+
+</details>
+
 ### Q34 · Task 1.7 · Medium
 
 A developer works on several Claude Code investigations in one repo. Last week the developer named a session "billing-bug" when starting it. Since then, they ran three other sessions in the same folder. Nothing changed in the billing code, and they want to return to that work.
@@ -377,6 +740,17 @@ What is the BEST approach?
 - B. Run claude --fork-session on the latest session to copy its work forward.
 - C. Run claude --resume billing-bug to reopen that named session.
 - D. Start a new session and describe the billing bug again from memory.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** No files changed, so resuming is right. Resuming by name opens the exact session the developer wants.
+
+**Closest distractor (A):** -c continues the latest session in the folder, which is one of the three newer sessions.
+
+</details>
 
 ### Q35 · Task 1.2 · Hard
 
@@ -389,6 +763,17 @@ What should the architect do?
 - C. Merge search and fact-checking into one subagent so there is no handoff at all.
 - D. Keep results flowing through the coordinator, which passes them to the fact-checker.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** Hub-and-spoke keeps all data flowing through the coordinator. This keeps observability and error control, which the team needs for debugging.
+
+**Closest distractor (A):** The shared database saves a little time, but the coordinator can no longer see or control the data flow.
+
+</details>
+
 ### Q36 · Task 1.5 · Medium
 
 A third-party freight API returns status as numbers from 1 to 7. Claude sometimes reads status 4 as "delivered," but 4 means "held at customs." The team cannot change the API. The system prompt already lists what each code means.
@@ -399,6 +784,17 @@ What is the BEST fix?
 - B. Add a PostToolUse hook that replaces each code with its plain-text meaning.
 - C. Add a PreToolUse hook that asks the API to return text instead of numbers.
 - D. Add few-shot examples that show the correct reading of each status code.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** A PostToolUse hook can turn each code into plain text before Claude reads it. This removes the misreading every time.
+
+**Closest distractor (A):** The prompt already lists the codes, so repeating it will not make the reading reliable.
+
+</details>
 
 ### Q37 · Task 1.6 · Easy
 
@@ -411,6 +807,17 @@ What is this pattern called?
 - C. Hub-and-spoke orchestration, where a coordinator routes all of the messages.
 - D. Parallel fan-out, where independent subagents all run at the same time.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** Each prompt uses the output of the one before it. This is prompt chaining, a fixed sequential pipeline.
+
+**Closest distractor (B):** Adaptive decomposition changes the plan as it goes, but these steps are fixed.
+
+</details>
+
 ### Q38 · Task 1.1 · Hard
 
 A data migration agent uses a limit of 15 iterations as its main stop rule. Large migrations get cut off with no error. One developer proposes raising the limit to 200. Another proposes removing the limit, since stop_reason already exists.
@@ -421,6 +828,17 @@ What is the BEST design?
 - B. Remove the limit and rely only on stop_reason to end every single run.
 - C. Stop on stop_reason, and keep a high limit as a safety net with a warning log.
 - D. Stop when Claude writes "MIGRATION COMPLETE," and keep the limit at 15.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** stop_reason should decide when the loop ends. A high limit with a warning log stays as a safety net for stuck loops.
+
+**Closest distractor (B):** stop_reason is the right main rule, but without a cap a stuck loop can run forever.
+
+</details>
 
 ### Q39 · Task 1.4 · Medium
 
@@ -433,6 +851,17 @@ Which rule MOST needs code enforcement?
 - C. List medicines in alphabetical order whenever the agent writes a summary.
 - D. Verify the patient's identity before sharing any prescription details.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** Sharing prescription details before verifying identity is a security and privacy failure. Rules like this need deterministic code.
+
+**Closest distractor (B):** A generic-drug suggestion involves money, but a miss only loses a saving, so a prompt is enough.
+
+</details>
+
 ### Q40 · Task 1.3 · Medium
 
 A coordinator has 80,000 tokens of history. To be safe, it passes this whole history to every subagent. Costs have risen, and subagents often work on side topics from old turns.
@@ -443,6 +872,17 @@ What is the BEST change?
 - B. Pass no context at all, and let each subagent search for what it needs.
 - C. Keep passing the full history, and move subagents to a larger context model.
 - D. Pass the same one-sentence summary of the whole history to every subagent.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** Subagents should get only what their task needs. Focused context cuts cost and keeps them on task.
+
+**Closest distractor (C):** A larger context model fits the history, but subagents still drift to side topics.
+
+</details>
 
 ### Q41 · Task 1.5 · Hard
 
@@ -455,6 +895,17 @@ What is the BEST change?
 - C. Add a PreToolUse hook that blocks transfer_funds until aml_check has passed.
 - D. Rename transfer_funds to transfer_after_aml_check so the order is clear to Claude.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** Only a PreToolUse hook can stop the transfer before it runs. It blocks transfer_funds until aml_check has passed.
+
+**Closest distractor (A):** Freezing the account reacts after the unchecked transfer has already gone out.
+
+</details>
+
 ### Q42 · Task 1.6 · Hard
 
 A team reviews a 60-file framework migration. To avoid long prompts, they split the files into six batches of ten. Each batch gets a careful review. But a function renamed in batch 2 is still called by its old name in batch 5, and nobody catches it.
@@ -465,6 +916,17 @@ What is the BEST fix?
 - B. Review each file in its own pass, then run one cross-file integration pass.
 - C. Review all 60 files in one pass with a model that has a large context window.
 - D. Keep the six batches and add a prompt line that asks for cross-batch checks.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Per-file passes keep attention focused. The cross-file pass then finds issues that span files, such as the renamed function.
+
+**Closest distractor (A):** Bigger batches still have edges, so issues across batches stay hidden.
+
+</details>
 
 ### Q43 · Task 1.7 · Medium
 
@@ -477,6 +939,17 @@ What should the injected summary contain?
 - C. Nothing at all, so that the agent rediscovers everything from the current files.
 - D. Key decisions, confirmed findings, open questions, and the changed files.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** A good summary keeps what is still true and useful. It lists decisions, findings, open questions, and the changed files, without stale tool output.
+
+**Closest distractor (A):** The full transcript brings the stale results back into the new session.
+
+</details>
+
 ### Q44 · Task 1.1 · Medium
 
 An agent uses a server-side web search tool. Some responses come back with stop_reason "pause_turn". The loop treats any value other than "tool_use" as finished. Users get half-written answers.
@@ -487,6 +960,17 @@ What should the loop do on "pause_turn"?
 - B. Return the partial answer and mark the task as complete in the logs.
 - C. Resend only the original user message so that the turn starts over.
 - D. Raise max_tokens and repeat the same request without the paused response.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** "pause_turn" means a server-side tool loop paused and is not finished. The loop sends the response back as it is and calls the API again.
+
+**Closest distractor (D):** "pause_turn" does not mean the output was too long, and dropping the paused response loses the work.
+
+</details>
 
 ### Q45 · Task 1.2 · Easy
 
@@ -499,6 +983,17 @@ In a hub-and-spoke design, which component should decide what happens next?
 - C. The news subagent, which should call another subagent and ask it for help.
 - D. The end user, who should rerun the full research request at a later time.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** In hub-and-spoke, the coordinator handles errors. It can retry, try other sources, or report the gap.
+
+**Closest distractor (C):** Subagents do not call each other directly in a hub-and-spoke design.
+
+</details>
+
 ### Q46 · Task 1.3 · Easy
 
 A developer builds a coordinator with the Claude Agent SDK. It must start subagents to handle parts of the work.
@@ -509,6 +1004,17 @@ Which tool lets the coordinator start a subagent?
 - B. The Task tool, which current SDK docs call the Agent tool.
 - C. The Read tool, which loads a subagent's definition file into context.
 - D. The fork_session option, which creates a child agent from the coordinator.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** The coordinator starts subagents with the Task tool. Current SDK docs call it the Agent tool, and "Task" still works.
+
+**Closest distractor (D):** fork_session branches a session, but it does not start a subagent.
+
+</details>
 
 ### Q47 · Task 1.4 · Hard
 
@@ -521,6 +1027,17 @@ What is the BEST fix?
 - C. Add a PostToolUse hook that rewrites "not found" into a clearer error message.
 - D. Open the gate only when a verified customer ID matches the refund's account.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** The gate checked that a call happened, not that it succeeded. It must require a verified customer ID that matches the refund's account.
+
+**Closest distractor (B):** Human review of every refund would catch the error, but it is slow and costly when a better gate fixes the cause.
+
+</details>
+
 ### Q48 · Task 1.5 · Medium
 
 A sales agent can call send_email. Policy says emails to addresses outside the company domain must go to a draft folder for review. Internal emails can be sent at once.
@@ -531,6 +1048,17 @@ Which design BEST fits?
 - B. A PostToolUse hook that recalls external emails right after they are sent.
 - C. A PreToolUse hook that redirects external emails to a review draft.
 - D. Two email tools, with a description that says which one to use for external mail.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** PreToolUse runs before the email is sent. It can redirect external emails to a review draft every time.
+
+**Closest distractor (A):** A prompt rule usually works, but it cannot guarantee the policy.
+
+</details>
 
 ### Q49 · Task 1.6 · Medium
 
@@ -543,6 +1071,17 @@ What is the BEST change?
 - C. Replace the planner with a fixed sequential pipeline of the five checks.
 - D. Give the planner more examples of good plans from successful past nights.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** The five checks are fixed and known. A fixed pipeline runs them all in the same order every night.
+
+**Closest distractor (A):** The planner would still make its own plan, so a prompt list only makes skips less likely.
+
+</details>
+
 ### Q50 · Task 1.1 · Hard
 
 A report agent's loop runs tools when stop_reason is "tool_use" and treats every other value as success. Some users get reports that end mid-sentence. Others get empty reports. Logs show some "max_tokens" and some "refusal" values. A teammate proposes auto-retrying any non-"end_turn" response three times.
@@ -553,6 +1092,17 @@ What is the BEST change?
 - B. Treat only "end_turn" as success, and log and handle other values as unfinished.
 - C. Keep the loop as it is, and check that the final text ends with a full stop.
 - D. Raise the safety cap so the loop has more turns to finish each report.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** Only "end_turn" means the task is finished. "max_tokens" and "refusal" mean the task is not done, so the loop should log them and handle the cause.
+
+**Closest distractor (A):** Blind retries repeat the same truncation, and retrying a refusal does not fix it.
+
+</details>
 
 ### Q51 · Task 1.3 · Hard
 
@@ -565,6 +1115,17 @@ What is the BEST fix?
 - C. Merge the three reviews into one subagent so there is only a single output.
 - D. Define one shared output structure in each subagent's delegation prompt.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** A shared output structure in each delegation prompt makes results easy to merge. It fixes the problem at the source.
+
+**Closest distractor (A):** A reformat agent adds cost and latency, and it can lose findings while it converts them.
+
+</details>
+
 ### Q52 · Task 1.4 · Medium
 
 A gate blocks process_refund until the customer's identity is verified. When it blocks, it returns only "Error." Logs show Claude then calls process_refund again and again until the safety cap stops the run.
@@ -575,6 +1136,17 @@ What is the BEST fix?
 - B. Lower the safety cap so that blocked runs stop sooner and cost less money.
 - C. Remove the gate and put the verification rule in the system prompt instead.
 - D. Add few-shot examples that show get_customer before every process_refund call.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** Claude can only recover if the error says what is missing. A clear message tells Claude to call get_customer first.
+
+**Closest distractor (B):** A lower cap ends the waste sooner, but the refund still never happens.
+
+</details>
 
 ### Q53 · Task 1.2 · Medium
 
@@ -587,6 +1159,17 @@ What is the BEST change?
 - C. Move all four subagents to a smaller and faster model to cut the wait time.
 - D. Let the coordinator choose which subagents each query actually needs.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** The coordinator should pick only the subagents a query needs. Simple questions can then skip most of the pipeline.
+
+**Closest distractor (B):** These steps depend on each other, so running them in parallel does not work.
+
+</details>
+
 ### Q54 · Task 1.7 · Easy
 
 A developer asks why a fresh session with a summary is better than resuming after a big refactor.
@@ -597,6 +1180,17 @@ What is the MAIN reason?
 - B. Old tool results in the history no longer match the files and can mislead Claude.
 - C. Fresh sessions always run on a newer model version than resumed sessions do.
 - D. Resumed sessions lose all of their earlier history once a refactor happens.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** After a big refactor, old tool results describe code that no longer exists. Claude may trust them and give wrong answers.
+
+**Closest distractor (A):** A resumed session can read changed files, but the stale results remain in its history.
+
+</details>
 
 ### Q55 · Task 1.1 · Hard
 
@@ -609,6 +1203,17 @@ What is the BEST design?
 - C. Let Claude choose tools from context, and gate create_shipment on a paid order.
 - D. Let Claude choose every step, and write the payment rule in the system prompt.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** Claude should choose tools from context, which adapts to each request. Code should enforce only the high-risk rule, which is the paid-order check.
+
+**Closest distractor (D):** Model choice is right, but a prompt rule cannot guarantee the payment check.
+
+</details>
+
 ### Q56 · Task 1.3 · Medium
 
 A report-writer subagent only needs to read research notes. Its AgentDefinition gives it Read, Write, Edit, and Bash. Last week it deleted a notes file while "cleaning up."
@@ -619,6 +1224,17 @@ What is the BEST fix?
 - B. Add a rule to the subagent's prompt that forbids deleting or moving any files.
 - C. Ask the coordinator to check the notes folder after each subagent run ends.
 - D. Run the subagent on a larger model that follows prompt rules more closely.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** Tools in the AgentDefinition should follow least privilege. A subagent without Write, Edit, or Bash cannot delete files.
+
+**Closest distractor (B):** A prompt rule lowers the risk, but it does not remove the ability to delete.
+
+</details>
 
 ### Q57 · Task 1.4 · Hard
 
@@ -631,6 +1247,17 @@ What is the BEST behavior?
 - C. Solve the first two issues, then tell the customer to call about the charge.
 - D. Process the $700 refund, since the payment record clearly shows two charges.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** The agent should handle each issue on its own. It solves what it can, escalates only the charge with a full handoff, and replies once.
+
+**Closest distractor (A):** Escalating everything wastes human time on issues the agent can solve.
+
+</details>
+
 ### Q58 · Task 1.2 · Medium
 
 A multi-agent research report contains a wrong statistic. The system uses hub-and-spoke orchestration. The team must find which agent introduced the error.
@@ -641,6 +1268,17 @@ What is the BEST first step?
 - B. Rerun the full pipeline with a lower temperature and compare the reports.
 - C. Check the coordinator's logs of each subagent's inputs and outputs.
 - D. Add a channel where subagents can review each other's findings directly.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** In hub-and-spoke, the coordinator sees every input and output. Its logs show where the wrong statistic first appeared.
+
+**Closest distractor (A):** The synthesis subagent may not know its source, and its answer could be wrong too.
+
+</details>
 
 ### Q59 · Task 1.5 · Easy
 
@@ -653,6 +1291,17 @@ Why will this NOT work?
 - C. PostToolUse hooks run only after the agent ends the whole session.
 - D. PostToolUse runs after the tool, so the refund has already happened.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** PostToolUse runs after the tool. By then the refund is already paid, so a PreToolUse hook must block it.
+
+**Closest distractor (B):** PostToolUse can read and change tool results, so this reason is false.
+
+</details>
+
 ### Q60 · Task 1.6 · Hard
 
 An agent adds tests to an old payments codebase with an adaptive plan. Halfway through, it finds that three modules share a hidden global config. Tests for these modules fail at random. The original plan has eight modules left in a set order.
@@ -663,6 +1312,17 @@ What should happen next?
 - B. Keep the original order, and list the config issue in the final report.
 - C. Stop the run and start over with a completely new plan from the beginning.
 - D. Start a separate agent on the config issue and keep the old plan running.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** Adaptive decomposition changes the plan when new facts appear. The shared config blocks reliable tests, so it should come first.
+
+**Closest distractor (D):** A separate agent splits the work, but the old plan keeps writing tests that fail at random.
+
+</details>
 
 ### Q61 · Task 1.2 · Hard
 
@@ -675,6 +1335,17 @@ What should the coordinator do?
 - C. Check coverage, send a targeted pricing query, and rerun the synthesis.
 - D. Let the pricing subagent ask the competitor subagent for any price data.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: C**
+
+**Why C is correct:** The coordinator should check the result against the requested areas. It then sends a targeted query to other sources and reruns synthesis.
+
+**Closest distractor (B):** A full rerun with the same subtasks costs more and hits the same paywalls.
+
+</details>
+
 ### Q62 · Task 1.3 · Hard
 
 A coordinator sends a draft report to a review subagent to check that claims match sources. It passes only the draft text. The reviewer approves claims it cannot check, and it flags some true claims as unsupported. A teammate suggests giving the reviewer a web search tool.
@@ -685,6 +1356,17 @@ What is the BEST fix?
 - B. Pass the draft together with the structured findings and their source metadata.
 - C. Let the writer subagent send its sources directly to the review subagent.
 - D. Tell the reviewer to mark every claim it cannot verify as "uncertain."
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: B**
+
+**Why B is correct:** The reviewer cannot check claims without the sources. The coordinator should pass the draft with the structured findings and their metadata.
+
+**Closest distractor (D):** Marking claims "uncertain" is honest, but the reviewer still cannot do its real job.
+
+</details>
 
 ### Q63 · Task 1.4 · Medium
 
@@ -697,6 +1379,17 @@ What should the architect recommend?
 - C. Move the rule to the top of the prompt, and keep the examples as well.
 - D. Add a gate that blocks the balance tool until identity is confirmed.
 
+<details>
+<summary>Show answer</summary>
+
+**Answer: D**
+
+**Why D is correct:** Sharing a balance with the wrong person is a security failure. A gate makes the identity check deterministic.
+
+**Closest distractor (C):** Better prompts lower failures, but they never reach zero.
+
+</details>
+
 ### Q64 · Task 1.2 · Hard
 
 Five research subagents each return 40 pages of raw search text to the coordinator. The coordinator's context fills up, and its synthesis misses key points. The team must keep citations. One engineer proposes a model with a larger context window.
@@ -707,6 +1400,17 @@ What is the BEST change?
 - B. Move the coordinator to a model that has a much larger context window.
 - C. Cut each subagent's output to its first 2,000 tokens before synthesis runs.
 - D. Strip the source metadata from all results to make room for more content.
+
+<details>
+<summary>Show answer</summary>
+
+**Answer: A**
+
+**Why A is correct:** Short structured findings save context and keep citations. The coordinator can then synthesize all key points.
+
+**Closest distractor (B):** A larger context window fits more text, but key points still get lost in raw pages.
+
+</details>
 
 ### Q65 · Task 1.7 · Hard
 
@@ -719,394 +1423,13 @@ What is the BEST next step?
 - C. Fork the session so that the next attempts happen on a separate clean branch.
 - D. Resume the session and tell Claude to ignore the dead ends from earlier turns.
 
-## Answer key
+<details>
+<summary>Show answer</summary>
 
-### Q1 · B
-
-**Why B is correct:** "tool_use" means Claude wants a tool and is not finished. The loop runs the tool, adds a tool_result block in a new user message, and calls Claude again.
-
-**Closest distractor (D):** The raw tool output is input for Claude, not a final answer, so the loop must send it back to Claude.
-
-### Q2 · D
-
-**Why D is correct:** A payout without a fraud check is a money and compliance risk. A prerequisite gate in code blocks the payout every time. The prompt already states the order, so prompt changes have reached their limit.
-
-**Closest distractor (B):** Few-shot examples can lower the failure rate, but they never guarantee the order.
-
-### Q3 · A
-
-**Why A is correct:** The subagents overlap because they all got the same scope. Giving each one a different subtopic or source type removes the duplicate work at its source.
-
-**Closest distractor (B):** A dedupe step cleans the output, but the duplicate searches and their costs still happen.
-
-### Q4 · C
-
-**Why C is correct:** A PostToolUse hook changes tool results before Claude reads them. Converting every weight to one unit there makes the data consistent every time.
-
-**Closest distractor (B):** A prompt rule asks Claude to convert, but model-side conversion is not reliable for data formats.
-
-### Q5 · A
-
-**Why A is correct:** A response can hold text and a tool_use block together. Checking the first block's type ends the loop too early. stop_reason is the reliable signal.
-
-**Closest distractor (C):** It tries to change Claude's behavior to fit a broken check, instead of fixing the check itself.
-
-### Q6 · B
-
-**Why B is correct:** The source details were lost when subagents sent prose summaries. Structured records keep content and metadata apart, so the memo can cite each clause.
-
-**Closest distractor (A):** The synthesis subagent cannot cite details it never received, so a prompt rule does not help.
-
-### Q7 · D
-
-**Why D is correct:** The steps are known and never change. A fixed sequential pipeline, also called prompt chaining, fits known steps best.
-
-**Closest distractor (A):** Adaptive decomposition is for unknown scope, and here it only adds cost and variation.
-
-### Q8 · C
-
-**Why C is correct:** No files changed, so the earlier context is still valid. Resuming the named session continues the same work with its full history.
-
-**Closest distractor (D):** A fresh session with a summary is for stale or messy history, and here it throws away valid context.
-
-### Q9 · B
-
-**Why B is correct:** Every tool_use block needs a matching tool_result in the next user message. The 400 error comes from two unanswered tool_use blocks, not from rate limits.
-
-**Closest distractor (C):** Turning off parallel tool use hides the bug, but it also makes every run slower.
-
-### Q10 · A
-
-**Why A is correct:** The staff cannot see the chat, so the handoff must stand alone. It needs the customer ID, summary, root cause, amount, and a recommended action.
-
-**Closest distractor (D):** The staff cannot open the transcript, so a link does not give them the facts.
-
-### Q11 · D
-
-**Why D is correct:** The subagents did their tasks well, and synthesis used all results. Whole areas are missing, so the scope was too narrow when the coordinator split the topic.
-
-**Closest distractor (A):** Narrow queries would reduce depth inside a topic, but here whole topics were never assigned.
-
-### Q12 · C
-
-**Why C is correct:** A tool failure should go back to Claude as a tool_result with is_error true. Claude can then retry, try another path, or explain the problem.
-
-**Closest distractor (D):** Backoff is for errors from the Claude API itself, but this failure came from the tool.
-
-### Q13 · A
-
-**Why A is correct:** Each subagent call starts with an empty context. The coordinator must pass the competitor list in the second prompt.
-
-**Closest distractor (D):** A prompt cannot give the subagent a memory it does not have.
-
-### Q14 · B
-
-**Why B is correct:** A PreToolUse hook runs before the tool. It can stop large discounts and send them to the approval queue every time.
-
-**Closest distractor (A):** PostToolUse runs after the discount is applied, so it can only try to undo it.
-
-### Q15 · D
-
-**Why D is correct:** The scope is unknown, and the documents are stale. Adaptive decomposition maps the system first, ranks the risks, and changes the plan as it learns.
-
-**Closest distractor (B):** Parallel subagents look efficient, but the old service list is probably incomplete.
-
-### Q16 · C
-
-**Why C is correct:** After a framework upgrade and 40 changed files, old tool results are stale. A fresh session with a structured summary keeps the findings without the stale history.
-
-**Closest distractor (D):** The stale results stay in the history, and a prompt cannot reliably make Claude ignore them.
-
-### Q17 · B
-
-**Why B is correct:** With "any", Claude must call a tool every turn, so it can never end with "end_turn". "auto" lets Claude choose to answer when it is done.
-
-**Closest distractor (C):** A prompt rule cannot win against a setting that forces a tool call every turn.
-
-### Q18 · A
-
-**Why A is correct:** The agent should split the message into separate issues and check them in parallel. It should share the customer context and send one combined reply.
-
-**Closest distractor (B):** Separate conversations lose the shared context and make customers repeat themselves.
-
-### Q19 · C
-
-**Why C is correct:** Hub-and-spoke gives one place for routing, logging, and error handling. This makes the system easier to observe and control.
-
-**Closest distractor (B):** Subagents do not remember earlier calls in any design, so this is not a benefit of the hub.
-
-### Q20 · D
-
-**Why D is correct:** Independent subagent tasks should start as several Task calls in one coordinator response. They then run in parallel, which fixes the delay at its cause.
-
-**Closest distractor (C):** A smaller model shortens each call, but the four calls still run one after another.
-
-### Q21 · A
-
-**Why A is correct:** A PreToolUse hook can change the tool input before the query runs. Setting tenant_id from the session makes every query safe, whatever Claude sends.
-
-**Closest distractor (B):** The query has already read other tenants' data, so filtering afterward is too late for a security rule.
-
-### Q22 · B
-
-**Why B is correct:** Uneven notes and inconsistent verdicts are signs of attention dilution. One pass per contract plus a cross-contract pass fixes both.
-
-**Closest distractor (C):** Batches reduce the load, but no pass compares contracts across batches.
-
-### Q23 · C
-
-**Why C is correct:** In the user message, tool_result blocks must come before any text. Moving the results first makes the request valid.
-
-**Closest distractor (B):** Tool results belong in a user message, so an assistant message is the wrong role.
-
-### Q24 · D
-
-**Why D is correct:** fork_session creates separate branches from the same point. Each plan can then grow from the shared analysis without affecting the other.
-
-**Closest distractor (A):** Trying both plans in one history mixes them, so the second attempt is shaped by the first.
-
-### Q25 · B
-
-**Why B is correct:** Prompt guidance is probabilistic. It makes the right order likely but never guaranteed, so a security rule needs code.
-
-**Closest distractor (C):** Few-shot examples also only make the behavior more likely.
-
-### Q26 · A
-
-**Why A is correct:** These four areas are distinct and together cover the topic. This split gives broad coverage with little overlap.
-
-**Closest distractor (C):** Each subtask is distinct, but all four stay inside warehouse robots, so the split is too narrow.
-
-### Q27 · C
-
-**Why C is correct:** The coordinator picks a subagent based on its description. Clear descriptions that say when to use each one fix the wrong routing.
-
-**Closest distractor (D):** Keyword rules are brittle and fail on questions that use other words.
-
-### Q28 · D
-
-**Why D is correct:** PreToolUse runs before the tool. It can block the deletion when no approved ticket exists.
-
-**Closest distractor (A):** PostToolUse runs after the account is already gone.
-
-### Q29 · B
-
-**Why B is correct:** Claude never sees the tool output, so it asks for the same data again. Every result must go into the history as a tool_result.
-
-**Closest distractor (D):** A cache makes repeated calls cheaper, but Claude still never sees the results.
-
-### Q30 · D
-
-**Why D is correct:** The cause is unknown, so the agent cannot know the steps in advance. Adaptive decomposition changes the plan as evidence appears.
-
-**Closest distractor (A):** The runbook fits known outages, but this failure is not a known pattern.
-
-### Q31 · C
-
-**Why C is correct:** Adjusters cannot see transcripts and have little time. A structured summary gives them what they need to act at once.
-
-**Closest distractor (A):** A full transcript has the facts, but adjusters must dig through it, which is slow at 60 cases an hour.
-
-### Q32 · A
-
-**Why A is correct:** Goals and quality criteria let the subagent adapt to new document types. Fixed procedures break when the input does not match the script.
-
-**Closest distractor (B):** More procedures only cover known types, and the next new type fails again.
-
-### Q33 · B
-
-**Why B is correct:** A response can contain text and a tool call together. The stop_reason is "tool_use", so the loop runs the tool and continues.
-
-**Closest distractor (A):** Text in a response does not mean the task is done.
-
-### Q34 · C
-
-**Why C is correct:** No files changed, so resuming is right. Resuming by name opens the exact session the developer wants.
-
-**Closest distractor (A):** -c continues the latest session in the folder, which is one of the three newer sessions.
-
-### Q35 · D
-
-**Why D is correct:** Hub-and-spoke keeps all data flowing through the coordinator. This keeps observability and error control, which the team needs for debugging.
-
-**Closest distractor (A):** The shared database saves a little time, but the coordinator can no longer see or control the data flow.
-
-### Q36 · B
-
-**Why B is correct:** A PostToolUse hook can turn each code into plain text before Claude reads it. This removes the misreading every time.
-
-**Closest distractor (A):** The prompt already lists the codes, so repeating it will not make the reading reliable.
-
-### Q37 · A
-
-**Why A is correct:** Each prompt uses the output of the one before it. This is prompt chaining, a fixed sequential pipeline.
-
-**Closest distractor (B):** Adaptive decomposition changes the plan as it goes, but these steps are fixed.
-
-### Q38 · C
-
-**Why C is correct:** stop_reason should decide when the loop ends. A high limit with a warning log stays as a safety net for stuck loops.
-
-**Closest distractor (B):** stop_reason is the right main rule, but without a cap a stuck loop can run forever.
-
-### Q39 · D
-
-**Why D is correct:** Sharing prescription details before verifying identity is a security and privacy failure. Rules like this need deterministic code.
-
-**Closest distractor (B):** A generic-drug suggestion involves money, but a miss only loses a saving, so a prompt is enough.
-
-### Q40 · A
-
-**Why A is correct:** Subagents should get only what their task needs. Focused context cuts cost and keeps them on task.
-
-**Closest distractor (C):** A larger context model fits the history, but subagents still drift to side topics.
-
-### Q41 · C
-
-**Why C is correct:** Only a PreToolUse hook can stop the transfer before it runs. It blocks transfer_funds until aml_check has passed.
-
-**Closest distractor (A):** Freezing the account reacts after the unchecked transfer has already gone out.
-
-### Q42 · B
-
-**Why B is correct:** Per-file passes keep attention focused. The cross-file pass then finds issues that span files, such as the renamed function.
-
-**Closest distractor (A):** Bigger batches still have edges, so issues across batches stay hidden.
-
-### Q43 · D
-
-**Why D is correct:** A good summary keeps what is still true and useful. It lists decisions, findings, open questions, and the changed files, without stale tool output.
-
-**Closest distractor (A):** The full transcript brings the stale results back into the new session.
-
-### Q44 · A
-
-**Why A is correct:** "pause_turn" means a server-side tool loop paused and is not finished. The loop sends the response back as it is and calls the API again.
-
-**Closest distractor (D):** "pause_turn" does not mean the output was too long, and dropping the paused response loses the work.
-
-### Q45 · A
-
-**Why A is correct:** In hub-and-spoke, the coordinator handles errors. It can retry, try other sources, or report the gap.
-
-**Closest distractor (C):** Subagents do not call each other directly in a hub-and-spoke design.
-
-### Q46 · B
-
-**Why B is correct:** The coordinator starts subagents with the Task tool. Current SDK docs call it the Agent tool, and "Task" still works.
-
-**Closest distractor (D):** fork_session branches a session, but it does not start a subagent.
-
-### Q47 · D
-
-**Why D is correct:** The gate checked that a call happened, not that it succeeded. It must require a verified customer ID that matches the refund's account.
-
-**Closest distractor (B):** Human review of every refund would catch the error, but it is slow and costly when a better gate fixes the cause.
-
-### Q48 · C
-
-**Why C is correct:** PreToolUse runs before the email is sent. It can redirect external emails to a review draft every time.
-
-**Closest distractor (A):** A prompt rule usually works, but it cannot guarantee the policy.
-
-### Q49 · C
-
-**Why C is correct:** The five checks are fixed and known. A fixed pipeline runs them all in the same order every night.
-
-**Closest distractor (A):** The planner would still make its own plan, so a prompt list only makes skips less likely.
-
-### Q50 · B
-
-**Why B is correct:** Only "end_turn" means the task is finished. "max_tokens" and "refusal" mean the task is not done, so the loop should log them and handle the cause.
-
-**Closest distractor (A):** Blind retries repeat the same truncation, and retrying a refusal does not fix it.
-
-### Q51 · D
-
-**Why D is correct:** A shared output structure in each delegation prompt makes results easy to merge. It fixes the problem at the source.
-
-**Closest distractor (A):** A reformat agent adds cost and latency, and it can lose findings while it converts them.
-
-### Q52 · A
-
-**Why A is correct:** Claude can only recover if the error says what is missing. A clear message tells Claude to call get_customer first.
-
-**Closest distractor (B):** A lower cap ends the waste sooner, but the refund still never happens.
-
-### Q53 · D
-
-**Why D is correct:** The coordinator should pick only the subagents a query needs. Simple questions can then skip most of the pipeline.
-
-**Closest distractor (B):** These steps depend on each other, so running them in parallel does not work.
-
-### Q54 · B
-
-**Why B is correct:** After a big refactor, old tool results describe code that no longer exists. Claude may trust them and give wrong answers.
-
-**Closest distractor (A):** A resumed session can read changed files, but the stale results remain in its history.
-
-### Q55 · C
-
-**Why C is correct:** Claude should choose tools from context, which adapts to each request. Code should enforce only the high-risk rule, which is the paid-order check.
-
-**Closest distractor (D):** Model choice is right, but a prompt rule cannot guarantee the payment check.
-
-### Q56 · A
-
-**Why A is correct:** Tools in the AgentDefinition should follow least privilege. A subagent without Write, Edit, or Bash cannot delete files.
-
-**Closest distractor (B):** A prompt rule lowers the risk, but it does not remove the ability to delete.
-
-### Q57 · B
-
-**Why B is correct:** The agent should handle each issue on its own. It solves what it can, escalates only the charge with a full handoff, and replies once.
-
-**Closest distractor (A):** Escalating everything wastes human time on issues the agent can solve.
-
-### Q58 · C
-
-**Why C is correct:** In hub-and-spoke, the coordinator sees every input and output. Its logs show where the wrong statistic first appeared.
-
-**Closest distractor (A):** The synthesis subagent may not know its source, and its answer could be wrong too.
-
-### Q59 · D
-
-**Why D is correct:** PostToolUse runs after the tool. By then the refund is already paid, so a PreToolUse hook must block it.
-
-**Closest distractor (B):** PostToolUse can read and change tool results, so this reason is false.
-
-### Q60 · A
-
-**Why A is correct:** Adaptive decomposition changes the plan when new facts appear. The shared config blocks reliable tests, so it should come first.
-
-**Closest distractor (D):** A separate agent splits the work, but the old plan keeps writing tests that fail at random.
-
-### Q61 · C
-
-**Why C is correct:** The coordinator should check the result against the requested areas. It then sends a targeted query to other sources and reruns synthesis.
-
-**Closest distractor (B):** A full rerun with the same subtasks costs more and hits the same paywalls.
-
-### Q62 · B
-
-**Why B is correct:** The reviewer cannot check claims without the sources. The coordinator should pass the draft with the structured findings and their metadata.
-
-**Closest distractor (D):** Marking claims "uncertain" is honest, but the reviewer still cannot do its real job.
-
-### Q63 · D
-
-**Why D is correct:** Sharing a balance with the wrong person is a security failure. A gate makes the identity check deterministic.
-
-**Closest distractor (C):** Better prompts lower failures, but they never reach zero.
-
-### Q64 · A
-
-**Why A is correct:** Short structured findings save context and keep citations. The coordinator can then synthesize all key points.
-
-**Closest distractor (B):** A larger context window fits more text, but key points still get lost in raw pages.
-
-### Q65 · B
+**Answer: B**
 
 **Why B is correct:** The history is long and full of dead ends, which weakens answers. A fresh session with a structured summary keeps what matters.
 
 **Closest distractor (D):** The dead ends stay in the history, and a prompt cannot reliably make Claude ignore them.
+
+</details>

@@ -24,7 +24,7 @@
 ## How to use
 
 1. Study the domain folder first (`domain-1-...` to `domain-5-...`). Start with its `README.md`.
-2. Answer every question in the domain file **before** you look at the answer key at the bottom.
+2. Answer each question **before** you open its answer. Answers are hidden under each question. Click **Show answer** to reveal one.
 3. Score yourself. For each miss, read the explanation **and** the "closest distractor" line. The distractor line shows the trap you fell into.
 4. Read the domain's `anti-patterns.md`, then reread the topic file for each question you missed.
 5. On a second pass, time yourself. The real exam gives 120 minutes for 60 items, about 2 minutes per item.
@@ -35,7 +35,7 @@
 - a question that uses words like BEST, MOST likely, or FIRST
 - four options, A to D
 
-**Format of each answer:**
+**Format of each answer** (collapsed under its question):
 - the correct letter
 - 2 to 3 sentences on why it is correct
 - one sentence on the closest distractor
