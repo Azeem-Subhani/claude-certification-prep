@@ -2,7 +2,7 @@
 
 > **Source:** converted from the owner's personal PDF `claude-architect-cheat-sheet.md.pdf` (17 pages), extracted with macOS PDFKit (the PDF had a text layer, so OCR was not needed).
 > **Conversion rules:** content and order are unchanged. Only broken formatting was fixed: words split across lines ("A gentic" → "Agentic", "verif y" → "verify", "itsel f" → "itself"), `**` glob characters lost in the PDF (`/*.test.tsx` → `**/*.test.tsx`), and one Batch API line whose words were scrambled in the PDF (marked below).
-> **Verify notes:** lines marked **⚠️ Verify (docs):** were added during conversion. They show where official Anthropic docs say something different or more. The original `[verify]` tags are the cheat sheet author's own. All open items are collected in [REVIEW_NEEDED.md](REVIEW_NEEDED.md).
+> **Verify notes:** lines marked **⚠️ Verify (docs):** were added during conversion. They show where official Anthropic docs say something different or more. The original `[verify]` tags are the cheat sheet author's own. All open items are collected in [REVIEW_NEEDED.md](REVIEW_NEEDED.md). Row IDs in these notes (for example A5b or C3) refer to the "Sources checked" table in each domain folder's `README.md`.
 
 ## How to read
 
@@ -18,7 +18,7 @@ Each line is one decision. "If" = the situation in the question. "choose" = the 
 - **Prerequisite gate:** code that blocks a tool until an earlier step is done.
 - **MCP (Model Context Protocol):** a standard way to connect Claude to outside tools and data.
 - **tool_choice:** "auto" = tool is optional. "any" = must call some tool. Forced = must call one named tool.
-  - **⚠️ Verify (docs):** the API also has `"none"`. On Claude Opus 5.5, Sonnet 5.5, Fable 5.1, and Mythos 5.1, `"any"` and forced `"tool"` return a 400 error. See [docs/verification-log.md](docs/verification-log.md) row A5b.
+  - **⚠️ Verify (docs):** the API also has `"none"`. On Claude Opus 5.5, Sonnet 5.5, Fable 5.1, and Mythos 5.1, `"any"` and forced `"tool"` return a 400 error. See row A5b.
 - **isRetryable:** true only if sending the exact same call again can work.
 - **CLAUDE.md:** a rules file Claude Code loads in every session.
 - **Skill:** a saved workflow (like /review) that loads only when used.

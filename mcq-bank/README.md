@@ -23,10 +23,10 @@
 
 ## How to use
 
-1. Study the domain file in [../domains/](../domains/) first.
+1. Study the domain folder first (`domain-1-...` to `domain-5-...`). Start with its `README.md`.
 2. Answer every question in the domain file **before** you look at the answer key at the bottom.
 3. Score yourself. For each miss, read the explanation **and** the "closest distractor" line. The distractor line shows the trap you fell into.
-4. Go back to the "Common traps" section of the study file for the topics you missed.
+4. Read the domain's `anti-patterns.md`, then reread the topic file for each question you missed.
 5. On a second pass, time yourself. The real exam gives 120 minutes for 60 items, about 2 minutes per item.
 
 **Format of each question:**
@@ -65,7 +65,7 @@ All numbers below are real script and agent output from 2026-10-15.
 | Ambiguity review | The blind solvers flagged items where a second option was arguable. Each was reviewed. | 1 stem tightened (D4-Q29). The others hold. |
 | Answer letter balance | Count per file | Each letter 22 to 28% per file. Never more than 2 of the same letter in a row. |
 | "Longest option is correct" cue | Count per file | D1 17%, D2 19%, D3 23%, D4 25%, D5 28% (the old practice set was mostly "B") |
-| No near-duplicates | Word-trigram and sequence similarity: within the bank, against the 125 older repo questions, and against the guide's sample questions | 0 flagged by script. 1 duplicate in meaning was found by hand review (D2-Q2) and rewritten. |
+| No near-duplicates | Word-trigram and sequence similarity: within the bank, against the 125 older repo questions (since removed from the repo), and against the guide's sample questions | 0 flagged by script. 1 duplicate in meaning was found by hand review (D2-Q2) and rewritten. |
 | No copied content | The cyberskill practice site was **not visited** by any writer. The writers were told to use no web sources. Lexical check against the older repo set and the guide samples found no matches. | Pass |
 | Readability | Sentence-length script: no sentence over 25 words, outside code | **0** long sentences in the 5 bank files |
 | Neutral wording | Scan for gendered pronouns in scenarios | 10 found and made neutral |

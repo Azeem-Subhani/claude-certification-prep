@@ -121,6 +121,8 @@ When an interactive Claude Code session fills with verbose discovery output, **`
 
 **Use it with care:** compaction is a summary, so details can be lost (see progressive summarization in [01](01-conversation-context-preservation.md)). That's why you should **write important facts to a scratchpad first**, then compact.
 
+> ⚠️ **Review item (R2):** the exam guide (task 5.4) mentions `/compact` "when context fills" with verbose output. The owner's cheat sheet says to compact early and often, not only at the limit. See [REVIEW_NEEDED.md](../REVIEW_NEEDED.md) item R2.
+
 ---
 
 ## 7. Real-world case study

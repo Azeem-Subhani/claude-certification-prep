@@ -134,6 +134,8 @@ Re-read those two files before continuing. Your other findings are still valid.
 
 This is **targeted re-analysis**: the agent re-reads only what changed instead of exploring the whole codebase again. It's faster and cheaper.
 
+> ⚠️ **Review item (R1):** the exam guide (task 1.7) supports this fix. The owner's cheat sheet says "never resume after files changed". Both agree on the heavy case: many changed files or a messy history means a fresh start with a summary. See [REVIEW_NEEDED.md](../REVIEW_NEEDED.md) item R1.
+
 ### Fix 2: Start fresh with a structured summary
 
 If **much** of the prior context is stale (big refactor, many files changed, old test results no longer true), resuming is risky. The old tool results will mislead the model. Instead:

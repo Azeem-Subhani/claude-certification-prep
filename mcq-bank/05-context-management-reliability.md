@@ -1,6 +1,6 @@
 # Domain 5 MCQ Bank: Context Management & Reliability
 
-> 36 questions (9 Easy, 15 Medium, 12 Hard) covering task statements 5.1-5.6. [Study notes](../domains/05-context-management-reliability.md) · [Bank index](README.md)
+> 36 questions (9 Easy, 15 Medium, 12 Hard) covering task statements 5.1-5.6. [Study notes](../domain-5-context-management-reliability/README.md) · [Anti-patterns](../domain-5-context-management-reliability/anti-patterns.md) · [Bank index](README.md)
 
 ## Questions
 

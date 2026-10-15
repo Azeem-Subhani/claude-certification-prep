@@ -99,9 +99,12 @@ Explore the module at $ARGUMENTS. Read the files you need, then return ONLY:
 
 > A forked skill **doesn't see your conversation history**. The skill's content is its prompt, so include everything it needs (Domain 1 · [03](../domain-1-agentic-architecture-orchestration/03-subagent-configuration.md)).
 
-### 4.2 `allowed-tools`: restrict tools during the skill
+### 4.2 `allowed-tools`: list the tools for the skill
 
-`allowed-tools` lists the tools the skill may use. Use it to keep a skill **safe and focused**:
+`allowed-tools` lists tools in the skill's frontmatter. The exam and the current product describe it differently:
+
+- **Exam framing (guide 3.2):** `allowed-tools` **restricts** tool access while the skill runs. Use it to keep a skill safe and focused.
+- **Current product:** `allowed-tools` **pre-approves** the listed tools, so they run without a permission prompt. It does not block other tools. To remove tools, use `disallowed-tools`, or a `deny` permission rule in settings.
 
 ```yaml
 ---
@@ -110,9 +113,10 @@ allowed-tools: Read, Write, Bash(git log *)
 ---
 ```
 
-This skill can read files, write the changelog, and run `git log`, but has no general Bash access for destructive commands like `rm` or `git push`.
+- **Exam view:** this skill is limited to reading files, writing the changelog, and running `git log`.
+- **Product view:** these three run without prompts. Other tools still ask for permission. To truly block `rm` or `git push`, add them to `disallowed-tools` or to a `deny` rule.
 
-> In current Claude Code, `allowed-tools` lets the listed tools run **without permission prompts** while the skill is active. `disallowed-tools` removes tools during the skill. Either way, the exam point is: **use frontmatter to limit what a skill can do.**
+> ⚠️ **Review item (R4):** for the exam, answer "use `allowed-tools` to limit what a skill can do". In real work, use `disallowed-tools` or `deny` rules to block tools. See [REVIEW_NEEDED.md](../REVIEW_NEEDED.md) item R4.
 
 ### 4.3 `argument-hint`: prompt for required parameters
 
@@ -150,7 +154,7 @@ When a developer types `/review`, autocomplete shows `[pr-number] [severity-thre
 **Changes:**
 1. Moved `/review` to **`.claude/commands/review.md`** and committed it. Everyone gets it on pull.
 2. Rewrote the health report as a skill with **`context: fork`**; only the summary returns to the main session.
-3. Added **`allowed-tools: Read, Glob, Grep, Write`** to the docs skill, with no git or general Bash.
+3. Added **`allowed-tools: Read, Glob, Grep, Write`** to the docs skill. (Exam view: this limits the skill. In current Claude Code, they would also need `disallowed-tools` to truly remove Bash.)
 4. Added **`argument-hint: [module-path]`** to the docs skill so people stop running it without a target.
 5. One developer wanted a stricter review: they created **`~/.claude/skills/review-strict/`** with a different name, leaving the team's `/review` unchanged.
 
@@ -165,7 +169,7 @@ A: `.claude/commands/` (or `.claude/skills/`) in the repo, committed to version 
 A: Runs the skill in an isolated subagent so its verbose or exploratory work doesn't fill your main conversation. Only the result comes back.
 
 **Q: How do I stop a skill from running destructive commands?**
-A: Limit its tools with `allowed-tools` (and/or `disallowed-tools`), for example allowing only read and write file tools.
+A: On the exam: limit its tools with `allowed-tools`, for example only read and write file tools. In current Claude Code, `allowed-tools` only pre-approves tools. Use `disallowed-tools` or a `deny` rule to block them.
 
 **Q: What is `argument-hint` for?**
 A: It shows the expected arguments when someone types the command, so they supply required parameters.
@@ -182,7 +186,7 @@ A: Usually no. Universal standards that apply to all work belong in CLAUDE.md (o
 
 - **Project** commands/skills (`.claude/commands/`, `.claude/skills/`) are shared via git; **user** ones (`~/.claude/...`) are personal.
 - **`context: fork`** isolates verbose or exploratory skills in a subagent; only the summary returns.
-- **`allowed-tools`** restricts what a skill can do (e.g. no destructive actions).
+- **`allowed-tools`** restricts what a skill can do, in the exam's framing. ⚠️ In current Claude Code it pre-approves tools, and `disallowed-tools` removes them.
 - **`argument-hint`** tells users which parameters to pass.
 - **Personal variants** → `~/.claude/skills/` with a **different name**.
 - **Skills = on-demand, task-specific. CLAUDE.md = always-loaded, universal.**

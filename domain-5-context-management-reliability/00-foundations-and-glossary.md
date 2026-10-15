@@ -52,7 +52,7 @@ Because the API is **stateless**, the application must **send the full history**
 | [04](04-large-codebase-context.md) | 5.4 Large codebase exploration | Delegate, write things down, survive crashes, compact |
 | [05](05-human-review-confidence-calibration.md) | 5.5 Human review and calibration | Measure by segment, sample, route by calibrated confidence |
 | [06](06-provenance-and-uncertainty.md) | 5.6 Provenance and uncertainty | Every claim keeps its source and date; show conflicts |
-| [07](07-scenario-practice-questions.md) | All | Practice questions |
+| [MCQ bank](../mcq-bank/05-context-management-reliability.md) | All | 36 exam-level practice questions |
 
 ---
 

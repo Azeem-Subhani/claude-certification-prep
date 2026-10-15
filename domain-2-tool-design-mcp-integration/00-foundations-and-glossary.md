@@ -121,7 +121,7 @@ An MCP server can expose three kinds of things:
 | [03](03-tool-distribution-and-tool-choice.md) | 2.3 Tool distribution and `tool_choice` | Give each agent the right tools, and control *whether* it must call one |
 | [04](04-mcp-server-integration.md) | 2.4 MCP integration | Configure servers safely and expose content as resources |
 | [05](05-built-in-tools.md) | 2.5 Built-in tools | Choose between Read, Write, Edit, Bash, Grep, Glob |
-| [06](06-scenario-practice-questions.md) | All | Practice questions |
+| [MCQ bank](../mcq-bank/02-tool-design-mcp.md) | All | 43 exam-level practice questions |
 
 ---
 

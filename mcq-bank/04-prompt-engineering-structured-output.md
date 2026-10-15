@@ -1,6 +1,6 @@
 # Domain 4 MCQ Bank: Prompt Engineering & Structured Output
 
-> 48 questions (12 Easy, 19 Medium, 17 Hard) covering task statements 4.1 to 4.6. [Study notes](../domains/04-prompt-engineering-structured-output.md) · [Bank index](README.md)
+> 48 questions (12 Easy, 19 Medium, 17 Hard) covering task statements 4.1 to 4.6. [Study notes](../domain-4-prompt-engineering-structured-output/README.md) · [Anti-patterns](../domain-4-prompt-engineering-structured-output/anti-patterns.md) · [Bank index](README.md)
 
 ## Questions
 

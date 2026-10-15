@@ -39,6 +39,12 @@ def validate_invoice(data: dict) -> list[str]:
     return errors
 ```
 
+**Pydantic** is a Python library for data validation. The exam guide lists it for schema checks, semantic validation errors, and validation-retry loops. In a Python pipeline:
+
+- Put the cross-field rules (like the total check above) in Pydantic validators.
+- When validation fails, feed Pydantic's error messages into the retry request.
+- Keep Pydantic even when you use tool use with a schema. The schema checks only the shape, not whether the values make sense.
+
 ---
 
 ## 3. Retry with error feedback

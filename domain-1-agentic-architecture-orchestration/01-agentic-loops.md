@@ -14,22 +14,39 @@ An **agentic loop** is the engine of every agent. It repeats four steps:
 3. **Execute** the requested tools in your code.
 4. **Return** the tool results to Claude by adding them to the conversation. Go back to step 1.
 
-The loop ends when Claude says it is finished.
+The loop ends when `stop_reason` is `"end_turn"`: Claude has finished.
 
+```mermaid
+flowchart TD
+    A[Send full history + tools to Claude] --> B{Read stop_reason}
+    B -- "tool_use" --> C[Run every requested tool]
+    C --> D{Did a tool fail?}
+    D -- no --> E[Add tool_result blocks to history]
+    D -- yes --> F[Add tool_result with is_error: true]
+    E --> A
+    F --> A
+    B -- "end_turn" --> G[Stop. Return the final answer]
+    B -- "pause_turn" --> H[Send the response back as it is] --> A
+    B -- "max_tokens / refusal / other" --> I[Not finished. Log it and check why]
+    A -.->|safety cap reached| J[Stop with a warning log]
 ```
-          ┌──────────────────────────────────────────┐
-          │                                          │
-  user ──▶│ 1. send messages ─▶ Claude               │
-          │                       │                  │
-          │        2. check stop_reason              │
-          │          │                  │            │
-          │     "tool_use"          "end_turn"       │
-          │          │                  │            │
-          │ 3. run tools          return final answer│
-          │          │                               │
-          │ 4. append tool_result ───────┐           │
-          │                              │           │
-          └──────────────────────────────┘ (repeat)  │
+
+If the Mermaid diagram does not render, here is the same loop in plain text:
+
+```text
+        +--------------------------------------------+
+        |  1. Send full history + tools to Claude    |<-----------+
+        +--------------------------------------------+            |
+                            |                                     |
+                    2. read stop_reason                           |
+          +-----------------+-------------------+                 |
+     "end_turn"        "tool_use"         anything else           |
+          |                 |                   |                 |
+     STOP: return     3. run each tool     not finished:          |
+     final answer           |              log + investigate      |
+                      4. add tool_result                          |
+                      blocks (is_error if                         |
+                      a tool failed) ------- 5. repeat -----------+
 ```
 
 ---
@@ -46,8 +63,9 @@ Every response from the Messages API has a field called **`stop_reason`**. It te
 | `"pause_turn"` | A long-running *server-side* tool (e.g. web search run by Anthropic) paused the turn | Send the conversation back so Claude can continue |
 | `"stop_sequence"` | Claude wrote one of your custom stop strings | Handle according to your design |
 | `"refusal"` | Claude declined the request for safety reasons | Do not run tools; handle the refusal (log, fall back, or inform the user) |
+| `"model_context_window_exceeded"` | The context window is full | Treat as incomplete: reduce the context (trim, summarize, or start fresh with a summary) |
 
-For the exam, the two that matter most are **`tool_use` → continue** and **`end_turn` → stop**.
+The docs list these seven values (see the Sources checked table in the [README](README.md)). For the exam, the two that matter most are **`tool_use` → continue** and **`end_turn` → stop**.
 
 ---
 
@@ -72,6 +90,9 @@ Key rules:
 - Tool results are sent in a message with role **`user`**.
 - If Claude asked for **several tools in one response** (parallel tool calls), return **all** the results together in **one** user message.
 - If a tool fails, still return a `tool_result`, with `"is_error": true` and a useful error message. Do not silently drop it. Claude can then retry, try another approach, or explain the problem.
+- In the user message, all `tool_result` blocks must come **first**. Any text must come after them, or the API returns an error.
+- Every `tool_use` needs a matching `tool_result`. If one is missing, the next API call fails.
+- **API errors are different from tool errors.** If the API call itself fails (for example, the service is busy), you get no response at all. Retry the API call with **backoff**: wait a little longer after each failed try.
 
 Because the history grows with each step, Claude can **reason about new information**. For example, after `lookup_order` shows a double charge, it can decide to call `process_refund`.
 
@@ -207,6 +228,25 @@ Why it is wrong: Claude often writes text *and* calls a tool in the same respons
 ### ❌ Anti-pattern 4: Not appending tool results
 
 If you run the tool but don't add the `tool_result` to the history, Claude doesn't know what happened. It may call the same tool again and again.
+
+### ❌ Anti-pattern 5: Forcing `tool_choice: "any"` inside the loop
+
+With `"any"`, Claude **must** call a tool on every turn. So it can never reply with `end_turn`, and the loop never ends. Use `"auto"` in a normal agent loop.
+
+### ❌ Anti-pattern 6: Letting a tool exception crash the loop
+
+If your code does not catch a tool error, the whole run stops with no answer for the user. Catch the error and return a `tool_result` with `is_error: true`. Claude can then choose another path.
+
+### How to diagnose a broken loop
+
+| What you see | Real cause | Fix |
+|---|---|---|
+| The agent quits in the middle of complex tasks | The code checks "is there a text block?" | Check `stop_reason` |
+| It stops when Claude writes "Done!" | The code parses natural language | Check `stop_reason` |
+| Long tasks are cut off at step 10 | An iteration cap is the main stop rule | Use `stop_reason`; keep the cap only as a safety net |
+| The agent never stops calling tools | `tool_choice: "any"` forces a tool call every turn | Use `"auto"` |
+| Claude asks for the same data again and again | Tool results are not added to the history | Append every `tool_result` |
+| A tool error ends the run with no answer | Exceptions are not caught | Return `is_error: true` |
 
 ---
 

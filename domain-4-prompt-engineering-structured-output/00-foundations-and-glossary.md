@@ -83,7 +83,7 @@ Two different kinds of errors appear in structured output:
 | [04](04-validation-retry-feedback-loops.md) | 4.4 Validation and retry | Check meaning, retry with specific errors, learn from dismissals |
 | [05](05-batch-processing.md) | 4.5 Batch processing | Use the Batches API for cheap, non-urgent volume work |
 | [06](06-multi-instance-multi-pass-review.md) | 4.6 Review architectures | Independent reviewers and focused passes |
-| [07](07-scenario-practice-questions.md) | All | Practice questions |
+| [MCQ bank](../mcq-bank/04-prompt-engineering-structured-output.md) | All | 48 exam-level practice questions |
 
 ---
 

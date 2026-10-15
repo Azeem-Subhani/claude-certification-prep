@@ -5,6 +5,14 @@
 
 The objectives below are paraphrased from the guide for study purposes. Check exact wording against the PDF.
 
+## Exam focus
+
+- **The agentic loop (1.1).** You must know when the loop continues and when it stops. You must also know the three classic loop bugs.
+- **Coordinator and subagents (1.2, 1.3).** You must know how information moves between agents. Subagents only know what you put in their prompt.
+- **Code vs prompt enforcement (1.4, 1.5).** You must choose code (gates, hooks) when a rule must hold every time. This applies to money, security, and compliance.
+- **Task decomposition (1.6).** You must match the pattern to the task. Use a fixed pipeline for known steps and an adaptive plan for unknown scope.
+- **Sessions (1.7).** You must choose between resuming, forking, and starting fresh with a summary.
+
 ## Exam scenarios where this domain is primary
 
 - Scenario 1: Customer Support Resolution Agent
@@ -29,7 +37,8 @@ The objectives below are paraphrased from the guide for study purposes. Check ex
 | [05 · Agent SDK Hooks](05-agent-sdk-hooks.md) | 1.5: `PreToolUse` interception, `PostToolUse` normalization |
 | [06 · Task Decomposition](06-task-decomposition.md) | 1.6: prompt chaining vs adaptive decomposition |
 | [07 · Sessions](07-session-state-resumption-forking.md) | 1.7: resume, fork, stale context |
-| [08 · Practice Questions](08-scenario-practice-questions.md) | 25 original scenario questions with explanations |
+| [Anti-patterns](anti-patterns.md) | Wrong approaches, why they fail, what to do instead, and exam traps |
+| [MCQ bank: Domain 1](../mcq-bank/01-agentic-architecture.md) | 65 exam-level practice questions with answer key and explanations |
 
 Sources: the exam guide PDF, plus Anthropic docs for SDK details: [Agent SDK hooks](https://code.claude.com/docs/en/agent-sdk/hooks), [Agent SDK sessions](https://code.claude.com/docs/en/agent-sdk/sessions), [Agent SDK subagents](https://code.claude.com/docs/en/agent-sdk/subagents), [Claude Code sessions](https://code.claude.com/docs/en/sessions), [Handling tool calls](https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls). Where the guide and current docs differ (e.g. `Task` vs `Agent` tool name), the notes give both.
 
@@ -133,7 +142,83 @@ Sources: the exam guide PDF, plus Anthropic docs for SDK details: [Agent SDK hoo
 - **Context is explicit**: subagents only know what you put in their prompt.
 - **Coordinator owns the flow**: routing, error handling, aggregation, and gap-filling all go through it.
 - **Loop control comes from `stop_reason`**, not from parsing text or iteration caps.
+- **Other `stop_reason` values** (`max_tokens`, `pause_turn`, `refusal`, `model_context_window_exceeded`) mean "not finished, check why".
+- **Keep the loop alive on tool errors:** add every tool result to the history, and return `is_error: true` when a tool fails.
+- **Pass findings as structured data** with source metadata. Start independent subagents in one response.
+- **Match the decomposition to the task:** a fixed pipeline for known steps, and an adaptive plan for unknown scope. For big reviews, use per-file passes plus a cross-file pass.
+- **Resume** when the context is valid. **Fork** to compare approaches. **Start fresh with a summary** when the history is stale.
 
-## My notes
+## Worked scenario
 
-<!-- Add study notes, lab links, and weak areas here -->
+**Setting:** You build a customer support agent with the Agent SDK. Its tools are `get_customer`, `lookup_order`, `process_refund`, and `escalate_to_human`. Company policy: refunds above $500 need a human. Identity must be verified before any refund.
+
+**Step 1: Build the loop.**
+- The loop calls Claude and checks `stop_reason`.
+- On `"tool_use"`, it runs every requested tool and returns all results in one user message.
+- On `"end_turn"`, it returns the answer.
+- A cap of 25 turns is added only as a safety net, with a warning log.
+
+**Step 2: Add the identity gate.**
+- Tests show the agent sometimes calls `process_refund` before `get_customer`.
+- The prompt already says "verify first", so a stronger prompt will not make this reliable.
+- You add a gate: `process_refund` returns an error unless a verified customer ID is in the session state.
+
+**Step 3: Add the refund limit hook.**
+- You add a `PreToolUse` hook on `process_refund`.
+- If the amount is above $500, the hook blocks the call and starts the escalation workflow instead.
+- This works every time, unlike a prompt rule.
+
+**Step 4: Normalize data.**
+- `lookup_order` returns Unix timestamps.
+- The shipping tool returns ISO 8601 dates.
+- A `PostToolUse` hook converts both to ISO 8601 before Claude reads them.
+
+**Step 5: Handle a tool failure.**
+- The shipping system times out.
+- The tool returns `is_error: true` with "Shipping service timed out. Try again in 30 seconds."
+- Claude tells the customer about the delay. It does not invent a delivery date.
+
+**Step 6: Handle a multi-issue message.**
+- A customer writes: "My order is late, I was charged twice, and I want to change my address."
+- The agent treats these as three issues.
+- It checks each issue with shared customer context, then gives one combined reply.
+
+**Step 7: Hand off.**
+- The duplicate charge is $640, above the limit.
+- The hook blocks the refund.
+- The agent calls `escalate_to_human` with:
+  - the customer ID
+  - the issue summary
+  - the root cause (a payment retry created two charges)
+  - the amount
+  - the recommended action
+
+The human agent can act without reading the chat.
+
+## Sources checked
+
+Each technical claim in this folder was checked against official docs on 2026-10-15.
+**Verdicts:** CONFIRMED = the docs agree. PARTIAL = they agree with limits. CONFLICT = the docs say something different. NOT FOUND = the docs do not say this.
+Conflicts with the exam guide are listed in [REVIEW_NEEDED.md](../REVIEW_NEEDED.md).
+
+| ID | Claim | Verdict | What the docs say | Source |
+|---|---|---|---|---|
+| A1 | The API is stateless. Each request must include the full history. | CONFIRMED | You always send the full conversation history. | platform.claude.com/docs/en/build-with-claude/working-with-messages |
+| A2 | `stop_reason` values | CONFIRMED | Seven values: `end_turn`, `max_tokens`, `stop_sequence`, `tool_use`, `pause_turn`, `refusal`, `model_context_window_exceeded`. | platform.claude.com/docs/en/build-with-claude/handling-stop-reasons |
+| A2b | What to do on `pause_turn` | CONFIRMED | A server-side tool loop hit its iteration limit. Send the assistant response back as it is, and make another request. Your own (client) tools never cause `pause_turn`. | platform.claude.com/docs/en/build-with-claude/handling-stop-reasons |
+| A2c | `refusal` | CONFIRMED | The model declined. The API still returns HTTP 200. | platform.claude.com/docs/en/build-with-claude/handling-stop-reasons |
+| A3a | `tool_result` blocks must come first in the user message | CONFIRMED | Any text must come after all tool results, or the API returns a 400 error. | platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls |
+| A3b | One response can contain text and `tool_use` blocks together | CONFIRMED | Example responses show a text block followed by a `tool_use` block. | platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools; platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls |
+| A3c | One response can contain several `tool_use` blocks (parallel tool use) | CONFIRMED | Every `tool_use` block needs a matching `tool_result` in the next user message. | platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use |
+| A3d | `disable_parallel_tool_use` | CONFIRMED | It is set inside `tool_choice`, not at the top level. | platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use |
+| A4 | `tool_result` has an `is_error` field | CONFIRMED | Optional boolean. Set it to true when the tool fails while running. | platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls |
+| A10 | SDK Tool Runner | CONFIRMED (beta) | `client.beta.messages.tool_runner` (Python) runs the loop for you. For human approval steps, the docs suggest a manual loop. | platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner |
+| C1a | The subagent tool is "Task" | PARTIAL | It was renamed **"Agent"** (v2.1.63). "Task" still works as an alias. | code.claude.com/docs/en/sub-agents; code.claude.com/docs/en/agent-sdk/subagents |
+| C1b | "Task"/"Agent" must be in `allowedTools` for the coordinator to spawn | PARTIAL | Every SDK example lists "Agent" in `allowedTools` (to auto-approve). The docs do not state it as a hard rule. The exam guide does. | code.claude.com/docs/en/agent-sdk/subagents |
+| C2 | `AgentDefinition` fields | CONFIRMED | `description` and `prompt` are required. Optional: `tools`, `disallowedTools`, `model`, `maxTurns`, `skills`, `mcpServers`, and more. | code.claude.com/docs/en/agent-sdk/subagents |
+| C3 | Subagents cannot spawn subagents | **CONFLICT** | By default, a subagent **can** spawn its own subagents, up to three layers deep. This can be turned off. | code.claude.com/docs/en/sub-agents |
+| C4 | Resume and fork | CONFIRMED | CLI: `-r/--resume` (by ID or name), `-c/--continue` (latest session in this folder), `--fork-session`. SDK: `resume`, `fork_session` (Python) / `forkSession` (TypeScript). | code.claude.com/docs/en/cli-reference; code.claude.com/docs/en/agent-sdk/sessions |
+| C4b | Named sessions | CONFIRMED | `--name`/`-n` at start, `/rename` during a session, `claude -r <name>` to resume. | code.claude.com/docs/en/sessions |
+| C5a | Hook events | CONFIRMED | Includes PreToolUse, PostToolUse, PostToolUseFailure, PreCompact, PostCompact, Stop, SubagentStart, SubagentStop, SessionStart, SessionEnd, UserPromptSubmit, and others. | code.claude.com/docs/en/agent-sdk/hooks |
+| C5b | PreToolUse can block or change a call | CONFIRMED | `permissionDecision` (allow / deny / ask / defer) and `updatedInput`. | code.claude.com/docs/en/agent-sdk/hooks |
+| C5c | PostToolUse runs after the tool has run, and can change what Claude sees | CONFIRMED | `updatedToolOutput` replaces the result. `additionalContext` adds to it. | code.claude.com/docs/en/agent-sdk/hooks |

@@ -5,6 +5,17 @@
 
 The objectives below are paraphrased from the guide for study purposes. Check exact wording against the PDF.
 
+## Exam focus
+
+- **Scope (3.1, 3.2).** The question is usually "who should get this?" Project files are shared through git. User files (`~/.claude/`) are personal.
+- **Always-on vs on-demand (3.2, 3.3).**
+  - Use CLAUDE.md for rules that always apply.
+  - Use `.claude/rules/` with `paths` for rules about certain file types.
+  - Use skills for workflows you run when needed.
+- **Plan mode vs direct execution (3.4).** Choose by how clear the scope is, not by how hard the task is.
+- **Iterative refinement (3.5).** Use examples when prose is misread, tests for edge cases, and the interview pattern for unfamiliar domains.
+- **CI/CD (3.6).** Use `-p` for jobs that hang and JSON output with a schema for machines. Use an independent reviewer. Include prior findings when you review again.
+
 ## Exam scenarios where this domain is primary
 
 - Scenario 2: Code Generation with Claude Code
@@ -27,7 +38,8 @@ The objectives below are paraphrased from the guide for study purposes. Check ex
 | [04 · Plan Mode vs Direct Execution](04-plan-mode-vs-direct-execution.md) | 3.4: when to plan, when to just do it, the Explore subagent |
 | [05 · Iterative Refinement](05-iterative-refinement.md) | 3.5: input/output examples, test-driven iteration, interview pattern, batching feedback |
 | [06 · CI/CD Integration](06-ci-cd-integration.md) | 3.6: `-p`, `--output-format json`, `--json-schema`, independent review, re-review hygiene |
-| [07 · Practice Questions](07-scenario-practice-questions.md) | 25 original scenario questions with explanations |
+| [Anti-patterns](anti-patterns.md) | Wrong approaches, why they fail, what to do instead, and exam traps |
+| [MCQ bank: Domain 3](../mcq-bank/03-claude-code-configuration.md) | 48 exam-level practice questions with answer key and explanations |
 
 Sources: the exam guide PDF, plus Claude Code docs: [Memory / CLAUDE.md](https://code.claude.com/docs/en/memory), [Skills](https://code.claude.com/docs/en/skills), [Run Claude Code programmatically](https://code.claude.com/docs/en/headless). Where the guide and current product behavior differ (e.g. commands now merged into skills, `--bare` skipping CLAUDE.md), the notes give both.
 
@@ -127,7 +139,63 @@ Sources: the exam guide PDF, plus Claude Code docs: [Memory / CLAUDE.md](https:/
 - **Plan for big or uncertain changes; execute directly for small, clear ones.**
 - **Show, don't tell:** examples and tests beat prose descriptions.
 - **CI = `-p` + structured output + fresh reviewer + no duplicate comments.**
+- **CLAUDE.md is guidance.** Settings permission rules and hooks enforce rules that must always hold.
+- **Use `@path` imports** to keep CLAUDE.md modular.
+- **A skill is a folder:** `.claude/skills/<name>/SKILL.md`. Use `context: fork` for noisy output and `argument-hint` for inputs.
 
-## My notes
+## Worked scenario
 
-<!-- Add study notes, lab links, and weak areas here -->
+**Setting:** A team of 12 developers uses Claude Code on a TypeScript monorepo. It has 6 packages and test files next to the source files in about 60 folders.
+
+**Step 1: Fix missing rules for new hires.**
+- Two new developers say Claude ignores the team's error-handling rules.
+- `/memory` shows the rules only in a senior developer's `~/.claude/CLAUDE.md`.
+- **Fix:** move them into the project's `CLAUDE.md` and commit it.
+
+**Step 2: Shrink the 900-line CLAUDE.md.**
+- The team splits it into `.claude/rules/api-conventions.md`, `.claude/rules/deployment.md`, and `.claude/rules/testing.md`.
+- `testing.md` gets `paths: ["**/*.test.ts", "**/*.test.tsx"]`. So it loads only when Claude works on test files.
+
+**Step 3: Make a must-hold rule.**
+- Claude must never read the `.env` files.
+- A CLAUDE.md line is not enough, so the team adds `"deny": ["Read(./.env)", "Read(./.env.*)"]` to `.claude/settings.json`.
+
+**Step 4: Share a review workflow.**
+- The team creates `.claude/skills/pr-review/SKILL.md` with `context: fork` and `argument-hint: "[PR number]"`.
+- One developer wants a stricter version. They create `~/.claude/skills/pr-review-strict/` with a different name.
+
+**Step 5: Pick a mode.**
+- Task A: "Move the date library from moment to date-fns across 45 files." Many files change, so: plan mode, then direct execution.
+- Task B: "Fix the null check in `parseInvoice`; the stack trace points to line 88." The scope is clear, so: direct execution.
+
+**Step 6: Add CI review.**
+- The CI job runs `claude -p` with `--output-format json --json-schema review-schema.json`.
+- A script posts each finding as an inline PR comment.
+- On new commits, the job passes the earlier findings and asks only for new or unresolved issues.
+
+## Sources checked
+
+Each technical claim in this folder was checked against official docs on 2026-10-15.
+**Verdicts:** CONFIRMED = the docs agree. PARTIAL = they agree with limits. CONFLICT = the docs say something different. NOT FOUND = the docs do not say this.
+Conflicts with the exam guide are listed in [REVIEW_NEEDED.md](../REVIEW_NEEDED.md).
+
+| ID | Claim | Verdict | What the docs say | Source |
+|---|---|---|---|---|
+| C6a | CLAUDE.md locations | CONFIRMED | User: `~/.claude/CLAUDE.md`. Project: `./CLAUDE.md` or `./.claude/CLAUDE.md`. Subfolder files load when Claude reads files there. | code.claude.com/docs/en/memory |
+| C6b | `CLAUDE.local.md` | CONFIRMED | Supported. Personal project notes, kept out of git. | code.claude.com/docs/en/memory |
+| C6c | Imports use `@path` | CONFIRMED | Paths resolve relative to the importing file. Up to four levels of nested imports. | code.claude.com/docs/en/memory |
+| C6d | "More specific CLAUDE.md wins" | NOT FOUND | Files load from broad to specific. Conflicting instructions may be followed unpredictably. | code.claude.com/docs/en/memory |
+| C7 | `.claude/rules/` with `paths:` frontmatter | CONFIRMED | The rule loads only when Claude reads or edits a matching file. Rules without `paths` load at start. | code.claude.com/docs/en/memory |
+| C8 | `/memory` | CONFIRMED | Lists the memory files and opens them for editing. `/context` shows context use, including loaded memory files. | code.claude.com/docs/en/commands; code.claude.com/docs/en/memory |
+| C9a | Skills: `.claude/skills/<name>/SKILL.md` | CONFIRMED | `.claude/commands/<name>.md` still works. | code.claude.com/docs/en/skills |
+| C9b | Skill frontmatter | CONFIRMED | Includes `name`, `description`, `argument-hint`, `allowed-tools`, `disallowed-tools`, `context: fork`, `agent`, `model`, `disable-model-invocation`, `paths`, and more. | code.claude.com/docs/en/skills |
+| C9c | `allowed-tools` **restricts** tools | **CONFLICT** | It **pre-approves** the listed tools. Other tools can still be called. Use `disallowed-tools` to remove tools. | code.claude.com/docs/en/skills |
+| C10 | Plan mode | CONFIRMED | Shift+Tab cycles modes (default → acceptEdits → plan). `--permission-mode plan`. `/plan`. | code.claude.com/docs/en/permission-modes; code.claude.com/docs/en/commands |
+| C10b | Explore subagent is read-only | CONFIRMED | Write and Edit are denied. | code.claude.com/docs/en/sub-agents |
+| C11 | `/compact` and auto-compaction | CONFIRMED | `/compact [instructions]` summarizes. Auto-compaction runs at a threshold. | code.claude.com/docs/en/commands; code.claude.com/docs/en/context-window |
+| C12 | CLI flags | CONFIRMED | `-p/--print`, `--output-format text | json | stream-json`, `--json-schema` (result in `structured_output`), `--append-system-prompt`, `--system-prompt`, `--max-turns` (print mode), `--allowedTools`, `--disallowedTools`, `--bare`, `--permission-mode`. | code.claude.com/docs/en/cli-reference; code.claude.com/docs/en/headless |
+| C13 | GitHub Actions | CONFIRMED | `anthropics/claude-code-action@v1`, with CLI flags passed in `claude_args`. | code.claude.com/docs/en/github-actions |
+| C16 | Git worktrees | CONFIRMED | `--worktree` / `-w` starts Claude in its own worktree. | code.claude.com/docs/en/cli-reference |
+| C17 | Settings files | CONFIRMED | `~/.claude/settings.json` (you, all projects), `.claude/settings.json` (shared, committed), `.claude/settings.local.json` (you, this project, gitignored), managed settings (organization). Precedence, highest first: managed, command line, project local, shared project, user. | code.claude.com/docs/en/settings |
+| C18 | Permission rules | CONFIRMED | `permissions.allow` / `deny` lists, for example `"Bash(npm run test *)"` and `"Read(./.env)"`. The hooks page says to use the permission system, not a hook, to enforce a hard allow or deny. | code.claude.com/docs/en/settings; code.claude.com/docs/en/hooks |
+| C19 | Claude Code hooks | CONFIRMED | Hooks are set in settings files. A PreToolUse command hook blocks a call by exiting with code 2, or by returning `permissionDecision: "deny"`. A hook that times out does not block by default. The docs call CLAUDE.md the place for static conventions. | code.claude.com/docs/en/hooks |

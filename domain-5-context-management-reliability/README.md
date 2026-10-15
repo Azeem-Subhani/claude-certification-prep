@@ -5,6 +5,14 @@
 
 The objectives below are paraphrased from the guide for study purposes. Check exact wording against the PDF.
 
+## Exam focus
+
+- **Keeping exact facts (5.1).** Summaries lose numbers and dates. Keep them in a "case facts" block. Trim long tool outputs. Put key findings at the top.
+- **Escalation (5.2).** Know the real triggers and the false ones. When a search returns several possible matches, ask for more details.
+- **Error propagation (5.3).** Send structured error context to the coordinator. Never hide a failure as an empty success.
+- **Long codebase sessions (5.4).** Recognize context degradation. Fix it with scratchpads, subagents, phase summaries, and manifests.
+- **Human review (5.5) and provenance (5.6).** Measure accuracy by segment and calibrate confidence scores. Keep a source attached to every claim.
+
 ## Exam scenarios where this domain is primary
 
 - Scenario 1: Customer Support Resolution Agent
@@ -29,7 +37,8 @@ The objectives below are paraphrased from the guide for study purposes. Check ex
 | [04 · Context in Large Codebase Exploration](04-large-codebase-context.md) | 5.4: context degradation, scratchpad files, manifests for crash recovery, `/compact` |
 | [05 · Human Review and Confidence Calibration](05-human-review-confidence-calibration.md) | 5.5: hidden weak segments, stratified sampling, field-level confidence, review routing |
 | [06 · Provenance and Uncertainty](06-provenance-and-uncertainty.md) | 5.6: claim-source mappings, conflicting sources, temporal data, rendering by content type |
-| [07 · Practice Questions](07-scenario-practice-questions.md) | 25 original scenario questions with explanations |
+| [Anti-patterns](anti-patterns.md) | Wrong approaches, why they fail, what to do instead, and exam traps |
+| [MCQ bank: Domain 5](../mcq-bank/05-context-management-reliability.md) | 36 exam-level practice questions with answer key and explanations |
 
 Sources: the exam guide PDF, plus [Claude Code sessions docs](https://code.claude.com/docs/en/sessions) (`/compact`) and the Agent SDK docs used in Domain 1.
 
@@ -135,7 +144,58 @@ Sources: the exam guide PDF, plus [Claude Code sessions docs](https://code.claud
 - **Write it down**: scratchpads and manifests survive context limits and crashes.
 - **Averages hide failures**: measure by segment, sample high-confidence output.
 - **Every claim keeps its source and date**; conflicts are shown, not hidden.
+- **Escalate at once** on an explicit request for a human, and on a policy gap. When several records match, ask for another identifier.
+- **Never abort everything** because one subagent failed. Continue and add coverage notes.
+- **Match the format to the content:** tables for financial data, prose for news, structured lists for technical findings.
 
-## My notes
+## Worked scenario
 
-<!-- Add study notes, lab links, and weak areas here -->
+**Setting:** A support agent for an online electronics store handles long chats. These often involve several orders.
+
+**Step 1: Keep the facts.**
+- A chat runs 45 turns about two orders.
+- The agent's code keeps a case facts block with both order numbers, amounts, dates, and statuses.
+- Older turns are summarized, but the facts block is sent unchanged in every request.
+
+**Step 2: Trim the lookup.**
+- `lookup_order` returns 52 fields.
+- A `PostToolUse` hook keeps only 6 of them: order ID, items, amount, ship date, delivery status, and return eligibility.
+
+**Step 3: Ambiguity.**
+- The customer gives only the name "Sam Lee".
+- `get_customer` returns three matches.
+- The agent asks for the email address on the account. It does not guess.
+
+**Step 4: Frustration.**
+- The customer writes, "This is ridiculous, your service is terrible."
+- The issue is a standard late-delivery credit, which is covered by policy.
+- The agent apologizes and offers the credit.
+- The customer replies, "I want to talk to a person." The agent escalates at once, with a structured handoff.
+
+**Step 5: Policy gap.**
+- Another customer asks the store to match a competitor's price.
+- The policy covers only the store's own price changes.
+- This is a gap, so the agent escalates instead of making up a rule.
+
+**Step 6: Tool failure.**
+- The returns system times out.
+- The tool reports `failure_type: timeout` after two local retries.
+- The agent tells the customer that it cannot check return status right now. It does not claim "no returns found".
+
+**Step 7: Review quality.**
+- The team wants to auto-approve refunds that the agent marks as "high confidence".
+- Before doing so, they calibrate the confidence scores on 500 labeled past cases.
+- They find poor accuracy for one product category, and keep human review for it.
+- They keep random sampling of the auto-approved cases.
+
+## Sources checked
+
+Each technical claim in this folder was checked against official docs on 2026-10-15.
+**Verdicts:** CONFIRMED = the docs agree. PARTIAL = they agree with limits. CONFLICT = the docs say something different. NOT FOUND = the docs do not say this.
+Conflicts with the exam guide are listed in [REVIEW_NEEDED.md](../REVIEW_NEEDED.md).
+
+| ID | Claim | Verdict | What the docs say | Source |
+|---|---|---|---|---|
+| A1 | The API is stateless. Each request must include the full history. | CONFIRMED | You always send the full conversation history. | platform.claude.com/docs/en/build-with-claude/working-with-messages |
+| A9 | Prompt caching exists | CONFIRMED | Uses `cache_control` breakpoints. The default cache lifetime is 5 minutes, with an optional 1-hour TTL (time to live). Cache reads cost much less than normal input. (The exam tests only that caching exists.) | platform.claude.com/docs/en/build-with-claude/prompt-caching |
+| C11 | `/compact` and auto-compaction | CONFIRMED | `/compact [instructions]` summarizes. Auto-compaction runs at a threshold. | code.claude.com/docs/en/commands; code.claude.com/docs/en/context-window |
